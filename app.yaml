@@ -6,3 +6,5 @@ threadsafe: true
 handlers:
 - url: /.*
   script: lunchapp.app
+  
+libraries:

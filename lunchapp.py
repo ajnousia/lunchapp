@@ -7,13 +7,12 @@ import datetime
 #import dateutil.parser
 
 today = datetime.date.isoformat(datetime.date.today())
-bolero_json = 'http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay=2015-08-25&language=fi'
-mystr = urllib2.urlopen(bolero_json)
+bolero = parse_json('http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay=2015-08-25&language=fi')
 
 
 def parse_json(url):
     # load the object from a string
-    json_obj = json.loads(urllib2.urlopen(url))
+    json_obj = json.loads(urllib2.urlopen(url)).open()
     bolero_menus = json_obj["MenusForDays"]
     menu_string = ""
     

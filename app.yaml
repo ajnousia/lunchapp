@@ -16,3 +16,6 @@ handlers:
 libraries:
 - name: webapp2
   version: latest
+
+- name: django
+  version: latest

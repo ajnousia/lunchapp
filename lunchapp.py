@@ -6,13 +6,9 @@ import webapp2
 import datetime
 #import dateutil.parser
 
-today = datetime.date.isoformat(datetime.date.today())
-bolero = parse_json('http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay=2015-08-25&language=fi')
-
-
 def parse_json(url):
     # load the object from a string
-    json_obj = json.loads(urllib2.urlopen(url)).open()
+    json_obj = json.loads(urllib2.urlopen(url).read())
     bolero_menus = json_obj["MenusForDays"]
     menu_string = ""
     
@@ -24,13 +20,16 @@ def parse_json(url):
             for component in  lunch["Components"]:
                 menu_string += "%s\n" % component
 
-
+    return menu_string
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/plain'
-        self.response.write('Hello, World! It is {0}\nMenus for this week:\n{1}'.format(today, unicode(mystr).encode('utf8')))
+        self.response.write('Hello, World! It is {0}\nMenus for this week:\n{1}'.format(today, unicode(bolero).encode('utf8')))
 
+
+today = datetime.date.isoformat(datetime.date.today())
+bolero = parse_json('http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay=2015-08-25&language=fi')
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

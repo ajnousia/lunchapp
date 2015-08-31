@@ -6,16 +6,13 @@ threadsafe: true
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
-
 - url: /bootstrap
   static_dir: bootstrap
-  
 - url: /.*
   script: lunchapp.app
-  
+
 libraries:
 - name: webapp2
   version: latest
-
-- name: django
+- name: jinja2
   version: latest

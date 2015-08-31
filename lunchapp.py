@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 # -- coding: utf-8 --
-import json
-import urllib2
 import webapp2
+import jinja2
 import datetime
+
+from parsefunctions import *
 from HTMLParser import HTMLParser
+
+
 
 
 HTML_HEADER = """<!DOCTYPE html>
@@ -44,46 +47,8 @@ class Restaurant:
         self.weeks_menus = weeks_menus
 
 
-def get_json(url):
-    request = urllib2.urlopen(url)
-    return json.loads(request.read())
-
-def parse_bolero_json(start_date):
-    json_string = get_json('http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay={0}&language=fi'.format(datetime.date.isoformat(start_date)))
-    menus = json_string["MenusForDays"]
-    weeks_menus = []
-    for menu in menus:
-        #date = datetime.datetime.strptime(menu["Date"],'%Y-%m-%dT%H:%M:%S')
-        #menu_string += "<h1>{0}</h1>".format(date.strftime('%A %d.%m.'))
-        new_lunch = []
-        for lunch in menu["SetMenus"]:
-            courses = []
-            for component in lunch["Components"]:
-                new_component = {}
-                new_component["Food"] = component[0:component.find('(')-1]
-                new_component["Types"] = component[component.find('(')+1:-1].strip().split(',')
-                courses.append(new_component)
-            new_lunch.append({"Courses": courses, "Price": lunch["Price"]})
-        weeks_menus.append(new_lunch)
-
-    return weeks_menus
 
 
-def parse_atomitie5_json(start_date):
-    weeks_menus = []
-    for i in range(0,7):
-        date = start_date + datetime.timedelta(i)
-        json_string = get_json('http://www.sodexo.fi/ruokalistat/output/daily_json/9/{0}/{1}/{2}/fi'.format(str(date.year), str(date.strftime('%m')), str(date.strftime('%d'))))
-        new_lunch = []
-        for lunch in json_string["courses"]:
-            courses = []
-            new_component = {}
-            new_component["Food"] = lunch["title_fi"]
-            new_component["Types"] = lunch["properties"].split(',')
-            courses.append(new_component)
-            new_lunch.append({"Courses": courses, "Price": lunch["price"]})
-        weeks_menus.append(new_lunch)
-    return weeks_menus
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -94,9 +59,9 @@ class MainPage(webapp2.RequestHandler):
 
         restaurants = [Restaurant("Bolero", "Atomitie 2 c 00370 Helsinki", parse_bolero_json(last_monday)),
                Restaurant("Atomitie 5", "Atomitie 5 00370 Helsinki", parse_atomitie5_json(last_monday))]
-        
+
         self.response.write("""<div class="container"><div class="row">""")
-        
+
         for restaurant in restaurants:
             self.response.write("""<div class="col-md-4">
                                         <div class="panel panel-default">

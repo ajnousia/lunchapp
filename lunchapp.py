@@ -95,19 +95,22 @@ class MainPage(webapp2.RequestHandler):
         restaurants = [Restaurant("Bolero", "Atomitie 2 c 00370 Helsinki", parse_bolero_json(last_monday)),
                Restaurant("Atomitie 5", "Atomitie 5 00370 Helsinki", parse_atomitie5_json(last_monday))]
         
-        self.response.write("""<div class="menu_container"><div class="row">""")
+        self.response.write("""<div class="container"><div class="row">""")
         
         for restaurant in restaurants:
-            self.response.write("""<div class="col-md-4">""")
-            self.response.write("<h1>" + restaurant.name + "</h1>")
-            
-            for course in restaurant.weeks_menus[today.weekday()-3]:
-                #self.response.write("<p><i>" +' '.join(course["Courses"]["Food"]) + "</i><br></p>")
+            self.response.write("""<div class="col-md-4">
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">""")
+            self.response.write("<h3>" + restaurant.name + "</h3></div>") #panel-heading
+            self.response.write("""<div class="panel-body">""")
+            for course in restaurant.weeks_menus[today.weekday()]:
                 for component in course["Courses"]:
-                    self.response.write("<p>" + component["Food"] + " <i>" +' '.join(component["Types"]) + "</i><br></p>")
-                self.response.write("<p>" + course["Price"]+ "<br><br></p>")
-            self.response.write("</div>")
-        self.response.write("</div></div>")
+                    self.response.write(component["Food"] + " <i>" +' '.join(component["Types"]) + "</i><br>")
+                self.response.write(course["Price"]+ "<br><br>")
+            self.response.write("</div>") #panel-body
+            self.response.write("</div>") #panel
+            self.response.write("</div>") #col
+        self.response.write("</div></div>") #menu-container, row
 
         self.response.write(HTML_FOOTER)
 

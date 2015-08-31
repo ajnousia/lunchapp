@@ -1,9 +1,9 @@
 body { 
-
+    text-align: center;
 }
 
 
-.menu_container {
-  text-align: center;
-  background-color: white;
-}
+/*.panel panel-default {
+    text-align: center;
+    background-color: white;
+}*/

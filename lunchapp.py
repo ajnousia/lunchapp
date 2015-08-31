@@ -40,24 +40,6 @@ class MainPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-        # self.response.write("""<div class="container"><div class="row">""")
-        #
-        # for restaurant in restaurants:
-        #     self.response.write("""<div class="col-md-4">
-        #                                 <div class="panel panel-default">
-        #                                     <div class="panel-heading">""")
-        #     self.response.write("<h3>" + restaurant.name + "</h3></div>") #panel-heading
-        #     self.response.write("""<div class="panel-body">""")
-        #     for course in restaurant.weeks_menus[today.weekday()]:
-        #         for component in course["Courses"]:
-        #             self.response.write(component["Food"] + " <i>" +' '.join(component["Types"]) + "</i><br>")
-        #         self.response.write(course["Price"]+ "<br><br>")
-        #     self.response.write("</div>") #panel-body
-        #     self.response.write("</div>") #panel
-        #     self.response.write("</div>") #col
-        # self.response.write("</div></div>") #menu-container, row
-
-
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

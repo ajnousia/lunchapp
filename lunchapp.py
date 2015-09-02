@@ -30,7 +30,8 @@ class MainPage(webapp2.RequestHandler):
         last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0)
 
         restaurants = [Restaurant("Bolero", "Atomitie 2 c 00370 Helsinki", parse_bolero_json(last_monday)),
-               Restaurant("Atomitie 5", "Atomitie 5 00370 Helsinki", parse_atomitie5_json(last_monday))]
+               Restaurant("Atomitie 5", "Atomitie 5 00370 Helsinki", parse_atomitie5_json(last_monday)),
+               Restaurant("Picante", "Valimotie 8 00380 Helsinki", parse_picante_html())]
 
         template_values = {
             "restaurants": restaurants,

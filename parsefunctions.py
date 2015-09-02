@@ -18,7 +18,10 @@ def parse_atomitie5_json(start_date):
             courses = []
             new_component = {}
             new_component["Food"] = lunch["title_fi"]
-            new_component["Types"] = lunch["properties"].split(',')
+            try:
+                new_component["Types"] = lunch["properties"].split(',')
+            except KeyError:
+                new_component["Types"] = []
             courses.append(new_component)
             new_lunch.append({"Courses": courses, "Price": lunch["price"]})
         weeks_menus.append(new_lunch)

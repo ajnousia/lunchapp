@@ -4,7 +4,7 @@ import webapp2
 import jinja2
 import datetime
 import os
-import urllib
+import urllib2
 
 from parsefunctions import *
 from HTMLParser import HTMLParser
@@ -38,7 +38,7 @@ class MainPage(webapp2.RequestHandler):
             "today": today
         }
 
-        template = JINJA_ENVIRONMENT.get_template('index.html')
+        template = JINJA_ENVIRONMENT.get_template('layouttest.html')
         self.response.write(template.render(template_values))
 
 

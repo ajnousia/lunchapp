@@ -100,5 +100,3 @@ def parse_bolero_json(start_date):
             new_lunch.append({"Courses": courses, "Price": lunch["Price"]})
         weeks_menus.append(new_lunch)
     return weeks_menus
-
-

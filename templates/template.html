@@ -1,0 +1,17 @@
+{% extends "layouttest.html" %}
+
+{% block content %}
+  {% for restaurant in restaurants %}
+  <div class="col-sm-6 col-md-4">
+    <div class="well">
+      <h2>{{restaurant.name}}</h2>
+      {% for course in restaurant.weeks_menus[today.weekday()] %}
+        {% for component in course["Courses"] %}
+          <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+        {% endfor %}
+        <p>{{course["Price"]}}</p>
+      {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}

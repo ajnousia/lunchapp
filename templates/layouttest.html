@@ -8,10 +8,9 @@
   <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css"
   rel="stylesheet" type="text/css">
-  <link href="stylesheets/layouttest.css" rel="stylesheet" type="text/css">
+  <link href="../stylesheets/layouttest.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-  {% block test %}{% endblock %}
   <div class="navbar navbar-default navbar-static-top">
     <div class="container">
       <div class="navbar-header">
@@ -39,22 +38,13 @@
     <div class="container">
       <div class="row">
         <div class="col-md-12 hidden-xs">
+        <!-- Nav tabs -->
           <ul class="nav nav-justified nav-tabs">
-            <li class="active">
-              <a href="#">Maanantai</a>
-            </li>
-            <li>
-              <a href="#">Tiistai</a>
-            </li>
-            <li>
-              <a href="#">Keskiviikko</a>
-            </li>
-            <li>
-              <a href="#">Torstai</a>
-            </li>
-            <li>
-              <a href="#">Perjantai</a>
-            </li>
+            <li class="active"><a href="#Maanantai" data-toggle="tab">Maanantai</a></li>
+            <li><a href="#Tiistai" data-toggle="tab">Tiistai</a></li>
+            <li><a href="#Keskiviikko" data-toggle="tab">Keskiviikko</a></li>
+            <li><a href="#Torstai" data-toggle="tab">Torstai</a></li>
+            <li><a href="#Perjantai" data-toggle="tab">Perjantai</a></li>
           </ul>
         </div>
       </div>
@@ -78,7 +68,28 @@
   <div class="section">
     <div class="container">
       <div class="row">
-        {% block content %}{% endblock %}
+        <div class="tab-content">
+          <div class="tab-pane active" id="Maanantai">
+            {% block maanantai %}
+            {% endblock %}
+          </div>
+          <div class="tab-pane" id="Tiistai">
+            {% block tiistai %}
+            {% endblock %}
+          </div>
+          <div class="tab-pane" id="Keskiviikko">
+            {% block keskiviikko %}
+            {% endblock %}
+          </div>
+          <div class="tab-pane" id="Torstai">
+            {% block torstai %}
+            {% endblock %}
+          </div>
+          <div class="tab-pane" id="Perjantai">
+            {% block perjantai %}
+            {% endblock %}
+          </div>
+        </div>
       </div>
     </div>
   </div>

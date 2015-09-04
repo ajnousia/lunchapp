@@ -1,17 +1,97 @@
 {% extends "layouttest.html" %}
 
-{% block content %}
+{% block day_menus %}
   {% for restaurant in restaurants %}
-  <div class="col-sm-6 col-md-4">
-    <div class="well">
-      <h2>{{restaurant.name}}</h2>
-      {% for course in restaurant.weeks_menus[today.weekday()] %}
-        {% for component in course["Courses"] %}
-          <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
-        {% endfor %}
+    <div class="col-sm-6 col-md-4">
+      <div class="well">
+        <h2>{{restaurant.name}}</h2>
+        {% for course in restaurant.weeks_menus[today.weekday()] %}
+          {% for component in course["Courses"] %}
+            <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+          {% endfor %}
         <p>{{course["Price"]}}</p>
-      {% endfor %}
+        {% endfor %}
       </div>
     </div>
   {% endfor %}
+{% endblock %}
+
+{% block maanantai %}
+  {% for restaurant in restaurants %}
+    <div class="col-sm-6 col-md-4">
+      <div class="well">
+        <h2>{{restaurant.name}}</h2>
+        {% for course in restaurant.weeks_menus[0] %}
+          {% for component in course["Courses"] %}
+            <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+          {% endfor %}
+        <p>{{course["Price"]}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block tiistai %}
+  {% for restaurant in restaurants %}
+    <div class="col-sm-6 col-md-4">
+      <div class="well">
+        <h2>{{restaurant.name}}</h2>
+        {% for course in restaurant.weeks_menus[1] %}
+          {% for component in course["Courses"] %}
+            <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+          {% endfor %}
+        <p>{{course["Price"]}}</p>
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block keskiviikko %}
+{% for restaurant in restaurants %}
+  <div class="col-sm-6 col-md-4">
+    <div class="well">
+      <h2>{{restaurant.name}}</h2>
+      {% for course in restaurant.weeks_menus[2] %}
+        {% for component in course["Courses"] %}
+          <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+        {% endfor %}
+      <p>{{course["Price"]}}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}
+
+{% block torstai %}
+{% for restaurant in restaurants %}
+  <div class="col-sm-6 col-md-4">
+    <div class="well">
+      <h2>{{restaurant.name}}</h2>
+      {% for course in restaurant.weeks_menus[3] %}
+        {% for component in course["Courses"] %}
+          <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+        {% endfor %}
+      <p>{{course["Price"]}}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
+{% endblock %}
+
+{% block perjantai %}
+{% for restaurant in restaurants %}
+  <div class="col-sm-6 col-md-4">
+    <div class="well">
+      <h2>{{restaurant.name}}</h2>
+      {% for course in restaurant.weeks_menus[4] %}
+        {% for component in course["Courses"] %}
+          <p>{{component["Food"]}} <i>{{' '.join(component["Types"])}}</i></p>
+        {% endfor %}
+      <p>{{course["Price"]}}</p>
+      {% endfor %}
+    </div>
+  </div>
+{% endfor %}
 {% endblock %}

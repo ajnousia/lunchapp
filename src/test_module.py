@@ -67,7 +67,8 @@ def parse_atomitie5_json(start_date):
     weeks_menus = []
     for i in range(0,7):
         date = start_date + datetime.timedelta(i)
-        json_string = get_json('http://www.sodexo.fi/ruokalistat/output/daily_json/9/{0}/{1}/{2}/fi'.format(str(date.year), str(date.strftime('%m')), str(date.strftime('%d'))))
+        json_string = get_json('http://www.sodexo.fi/ruokalistat/output/daily_json/9/{0}/{1}/{2}/fi'.format(
+                                                                                                            str(date.year), str(date.strftime('%m')), str(date.strftime('%d'))))
         new_lunch = []
         for lunch in json_string["courses"]:
             courses = []
@@ -151,7 +152,6 @@ restaurants = [Restaurant("Bolero", Address("Atomitie", "2", "00370", "Helsinki"
     Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"), parse_picante_html())]
 
 print json.dumps(restaurants[0].location.get_geojson())
-
 
 
     

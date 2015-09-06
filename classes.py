@@ -37,7 +37,7 @@ class Restaurant(object):
     def buildNominatimUrlQueryString(self):
         return 'http://nominatim.openstreetmap.org/search?' \
             'q={0}%20{1}%20{2}[restaurant]&format=json&countrycodes=fi&bounded=1&polygon=0&' \
-            'limit=1'.format(self.address.self.house_number, self.address.street, self.address.city)
+            'limit=1'.format(self.address.house_number, self.address.street, self.address.city)
     
 
 class Week_menu(object):

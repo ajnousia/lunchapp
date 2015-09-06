@@ -93,6 +93,18 @@
       </div>
     </div>
   </div>
+  <script>
+    $(window).load(function () {
+          var date = new Date()
+          var weekday = date.getDay();
+          var weekdays = ["Maanantai", "Maanantai", "Tiistai", "Keskiviikko", "Torstai", "Perjantai", "Maanantai"]
+          var str = ".nav-tabs a[href=\"#" + weekdays[weekday] + "\"]"
+
+          $(str).tab('show');
+      });
+  </script>
 </body>
 </html>
+
+
 {% endautoescape %}

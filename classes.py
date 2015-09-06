@@ -11,23 +11,26 @@ class Restaurants(object):
         
     def number_of_restaurants(self):
         return len(self.restaurants)
-        
+    
+    def get_restaurant_by_name(self):
+        pass
+
 
 class Restaurant(object):
     
-    def __init__(self, name, address_obj):
+    def __init__(self, name, address_object):
         self.name = name
-        self.address = address_obj
+        self.address = address_object
         self.menu_list = []
         self.location = self.geocodeAddress()
     
     def get_menu_list(self):
         return self.menu_list
     
-    def add_menu_day(self, day_menu):
+    def add_day_menu(self, day_menu):
         self.menu_list.append(day_menu)
     
-    def get_menu_for_date(self):
+    def get_menu_for_date(self, date):
         pass
     
     def geocodeAddress(self):
@@ -39,15 +42,6 @@ class Restaurant(object):
             'q={0}%20{1}%20{2}[restaurant]&format=json&countrycodes=fi&bounded=1&polygon=0&' \
             'limit=1'.format(self.address.house_number, self.address.street, self.address.city)
     
-
-class Week_menu(object):
-    
-    def __init__(self):
-        self.week_menu = []
-        
-    def add_menu_day(self, day_menu):
-        self.week_menu.append(day_menu)
-        
         
 class Day_menu(object):
     
@@ -61,19 +55,35 @@ class Day_menu(object):
         
 class Course(object):
     
-    def __init__(self, name, price, properties = None):
+    def __init__(self, price):
+        self.components = []    
+        self.price = price
+        
+    def add_component(self, component):
+        self.components.append(component)
+        
+    def get_course(self):
+        pass
+
+
+class Component(object):
+    
+    def __init__(self, name, properties = None):
         self.name = name    
         self.properties = properties # esim. "V, GL"
-        self.price = price
-
+        
+        
 class Address:
+    
     def __init__(self, street, house_number, postal_code, city):
         self.street = street
         self.house_number = house_number
         self.postal_code = postal_code
         self.city = city
 
+
 class Location:
+    
     def __init__(self, lat, lon):
         self.lat = float(lat)
         self.lon = float(lon)

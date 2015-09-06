@@ -4,7 +4,6 @@ import urllib2
 
 from HTMLParser import HTMLParser
 
-
 class PicanteHTMLParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
@@ -102,7 +101,57 @@ def parse_bolero_json(start_date):
         weeks_menus.append(new_lunch)
     return weeks_menus
 
+def buildNominatimUrlQueryString(address):
+    return 'http://nominatim.openstreetmap.org/search?' \
+        'q={0}%20{1}%20{2}[restaurant]&format=json&countrycodes=fi&bounded=1&polygon=0&' \
+        'limit=1'.format(address.house_number, address.street, address.city)
+
+def geocodeAddress(address):
+        json_string = get_json(buildNominatimUrlQueryString(address))
+        return Location(json_string[0]["lat"], json_string[0]["lon"])
+                
+class Restaurant:
+    def __init__(self, name, address, weeks_menus):
+        self.name = name
+        self.address = address
+        self.weeks_menus = weeks_menus
+        self.location = geocodeAddress(self.address)
+    
+class Address:
+    def __init__(self, street, house_number, postal_code, city):
+        self.street = street
+        self.house_number = house_number
+        self.postal_code = postal_code
+        self.city = city
+
+class Location:
+    def __init__(self, lat, lon):
+        self.lat = float(lat)
+        self.lon = float(lon)
+    
+    def get_geojson(self):
+        geo_json = [ {"type": "Feature",
+                      "geometry": {
+                                   "type": "Point",
+                                   "coordinates": [self.lon, self.lat]
+                                   }
+                      }
+                    ]
+        return geo_json
+        
+
 
 today = datetime.date.today()
 last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0)
-print parse_atomitie5_json(last_monday)
+
+restaurants = [Restaurant("Bolero", Address("Atomitie", "2", "00370", "Helsinki"), parse_bolero_json(last_monday)),
+    Restaurant("Atomitie 5", Address("Atomitie", "5", "00370", "Helsinki"), parse_atomitie5_json(last_monday)),
+    Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"), parse_picante_html())]
+
+print restaurants[0].location.get_geojson()
+
+
+    
+    
+    
+

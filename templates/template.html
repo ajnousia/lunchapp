@@ -1,21 +1,5 @@
 {% extends "layouttest.html" %}
 
-{% block day_menus %}
-  {% for restaurant in restaurants %}
-    <div class="col-sm-6 col-md-4">
-      <div class="well">
-        <h2>{{restaurant.name}}</h2>
-        {% for course in restaurant.menu_list[0].courses %}
-          {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-        {% endfor %}
-      </div>
-    </div>
-  {% endfor %}
-{% endblock %}
-
 {% block maanantai %}
   {% for restaurant in restaurants %}
     <div class="col-sm-6 col-md-4">

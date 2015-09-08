@@ -1,5 +1,6 @@
 import datetime
 
+import parsefunctions
 
 class Restaurants(object):
     
@@ -22,7 +23,7 @@ class Restaurant(object):
         self.name = name
         self.address = address_object
         self.menu_list = []
-        self.location = self.geocodeAddress()
+        self.location = self.geocode_address()
     
     def get_menu_list(self):
         return self.menu_list
@@ -33,17 +34,17 @@ class Restaurant(object):
     def get_menu_for_date(self, date):
         pass
     
-    def geocodeAddress(self):
-        json_string = get_json(self.buildNominatimUrlQueryString())
+    def geocode_address(self):
+        json_string = parsefunctions.get_json(self.build_nominatim_url_query_string())
         return Location(json_string[0]["lat"], json_string[0]["lon"])
     
-    def buildNominatimUrlQueryString(self):
+    def build_nominatim_url_query_string(self):
         return 'http://nominatim.openstreetmap.org/search?' \
             'q={0}%20{1}%20{2}[restaurant]&format=json&countrycodes=fi&bounded=1&polygon=0&' \
             'limit=1'.format(self.address.house_number, self.address.street, self.address.city)
     
         
-class Day_menu(object):
+class DayMenu(object):
     
     def __init__(self, date_object):
         self.date = date_object
@@ -71,6 +72,12 @@ class Component(object):
     def __init__(self, name, properties = None):
         self.name = name    
         self.properties = properties # esim. "V, GL"
+    
+    def get_properties_as_string(self):
+        if self.properties == None:
+            return ''
+        else:
+            return ' '.join(self.properties)
         
         
 class Address:

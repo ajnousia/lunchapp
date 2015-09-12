@@ -1,4 +1,5 @@
 import datetime
+import pickle
 
 import parsefunctions
 
@@ -104,4 +105,7 @@ class Location:
                       }
                     ]
         return geo_json
+    
+    
+
     

@@ -68,11 +68,11 @@ class MainPage(webapp2.RequestHandler):
     
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
         today = datetime.date.today()
+        
         restaurants = refresh_restaurants_data(RESTAURANTS)
         
         template_values = {
-            "restaurants": restaurants.restaurants,
-            "today": today
+            "restaurants": restaurants.restaurants
         }
 
         template = JINJA_ENVIRONMENT.get_template('template.html')

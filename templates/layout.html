@@ -69,26 +69,8 @@
     <div class="container">
       <div class="row">
         <div class="tab-content">
-          <div class="tab-pane active" id="Maanantai">
-            {% block maanantai %}
-            {% endblock %}
-          </div>
-          <div class="tab-pane" id="Tiistai">
-            {% block tiistai %}
-            {% endblock %}
-          </div>
-          <div class="tab-pane" id="Keskiviikko">
-            {% block keskiviikko %}
-            {% endblock %}
-          </div>
-          <div class="tab-pane" id="Torstai">
-            {% block torstai %}
-            {% endblock %}
-          </div>
-          <div class="tab-pane" id="Perjantai">
-            {% block perjantai %}
-            {% endblock %}
-          </div>
+          {% block tab_content %}
+          {% endblock %}
         </div>
       </div>
     </div>

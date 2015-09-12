@@ -25,16 +25,17 @@ def fetch_restaurants_data():
     for menu in parse_picante_html():
         picante.add_day_menu(menu)
 
-    restaurants.add_restaurant(bolero)
-    restaurants.add_restaurant(atomitie5)
-    restaurants.add_restaurant(picante)
+    for i in range(3):
+        restaurants.add_restaurant(bolero)
+        restaurants.add_restaurant(atomitie5)
+        restaurants.add_restaurant(picante)
     
     return restaurants
     # HTTPException 
     
     
 def create_dymmy_restaurant_data():
-    output = open("dymmy_restaurant_data.pkl", "wb")
+    output = open("./static_files/dymmy_restaurant_data.pkl", "wb")
     restaurants_data = fetch_restaurants_data()
     pickle.dump(restaurants_data, output)
     output.close()

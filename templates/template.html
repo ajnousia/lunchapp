@@ -1,81 +1,22 @@
 {% extends "layout.html" %}
 
-{% block maanantai %}
-  {% for restaurant in restaurants %}
-    <div class="col-sm-6 col-md-4">
-      <div class="well">
-        <h2>{{restaurant.name}}</h2>
-        {% for course in restaurant.menu_list[0].courses %}
-          {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-        {% endfor %}
-      </div>
+{% block tab_content %}
+  {% set weekdays = [['Maanantai', 0], ['Tiistai', 1], ['Keskiviikko', 2], ['Torstai', 3], ['Perjantai', 4]] %}
+  {% for weekday in weekdays %}
+    <div class="tab-pane{{" active" if weekday[1] == 0}}" id="{{ weekday[0] }}">
+      {% for restaurant in restaurants %}
+        <div class="col-sm-6 col-md-4">
+          <div class="well">
+            <h2>{{restaurant.name}}</h2>
+            {% for course in restaurant.menu_list[weekday[1]].courses %}
+              {% for component in course.components %}
+                <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
+              {% endfor %}
+            <p>{{course.price}}</p>
+            {% endfor %}
+          </div>
+        </div>
+      {% endfor %}
     </div>
   {% endfor %}
-{% endblock %}
-
-{% block tiistai %}
-  {% for restaurant in restaurants %}
-    <div class="col-sm-6 col-md-4">
-      <div class="well">
-        <h2>{{restaurant.name}}</h2>
-        {% for course in restaurant.menu_list[1].courses %}
-          {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-        {% endfor %}
-      </div>
-    </div>
-  {% endfor %}
-{% endblock %}
-
-{% block keskiviikko %}
-{% for restaurant in restaurants %}
-  <div class="col-sm-6 col-md-4">
-    <div class="well">
-      <h2>{{restaurant.name}}</h2>
-      {% for course in restaurant.menu_list[2].courses %}
-        {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-      {% endfor %}
-    </div>
-  </div>
-{% endfor %}
-{% endblock %}
-
-{% block torstai %}
-{% for restaurant in restaurants %}
-  <div class="col-sm-6 col-md-4">
-    <div class="well">
-      <h2>{{restaurant.name}}</h2>
-      {% for course in restaurant.menu_list[3].courses %}
-        {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-      {% endfor %}
-    </div>
-  </div>
-{% endfor %}
-{% endblock %}
-
-{% block perjantai %}
-{% for restaurant in restaurants %}
-  <div class="col-sm-6 col-md-4">
-    <div class="well">
-      <h2>{{restaurant.name}}</h2>
-      {% for course in restaurant.menu_list[4].courses %}
-        {% for component in course.components %}
-            <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
-          {% endfor %}
-        <p>{{course.price}}</p>
-      {% endfor %}
-    </div>
-  </div>
-{% endfor %}
 {% endblock %}

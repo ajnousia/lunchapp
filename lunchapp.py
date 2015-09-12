@@ -15,15 +15,15 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-USE_DEVELOPMENT_DATA = False
+USE_DEVELOPMENT_DATA = True
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None 
-
 
 def refresh_restaurants_data(restaurants):
     current_date = datetime.date.today()
     if USE_DEVELOPMENT_DATA == True:
-        pkl_file = open("/static_files/dummy_restaurant_data.pkl", "rb")
+        path = os.path.join(os.path.dirname(__file__), 'static_files/dymmy_restaurant_data.pkl')
+        pkl_file = open(path, "rb")
         restaurants = pickle.load(pkl_file)
         pkl_file.close()
         return restaurants
@@ -58,11 +58,9 @@ def fetch_restaurants_data():
     LATEST_DATA_FETCH_DATE = today
     
     return restaurants
-    # HTTPException 
     
-
-
-#create_dymmy_restaurant_data()
+    # TODO sometimes HTTPException is raised 
+    
 
 class MainPage(webapp2.RequestHandler):
 

@@ -5,20 +5,23 @@
   {% for weekday in weekdays %}
     <div class="tab-pane{{" active" if weekday[1] == 0}}" id="{{ weekday[0] }}">
       {% for restaurant in restaurants %}
-        <div class="col-sm-6 col-md-4">
+        <div class="col-sm-6 col-lg-4 text-center">
           <div class="well">
             <h2>{{restaurant.name}}</h2>
             {% for course in restaurant.menu_list[weekday[1]].courses %}
+              <p>
               {% for component in course.components %}
-                <p>{{component.name}} <i>{{component.get_properties_as_string()}}</i></p>
+                {{component.name}} <i>{{component.get_properties_as_string()}}</i>
+                <br>
               {% endfor %}
-            <p>{{course.price}}</p>
+              <i>{{course.price}} €</i>
+              </p>
             {% endfor %}
           </div>
         </div>
         {% autoescape false %}
-        {{"<div class=\"clearfix visible-md\"></div>" if loop.index % 4 == 0}}
-        {{"<div class=\"clearfix visible-sm\"></div>" if loop.index % 3 == 0}}
+        {{"<div class=\"clearfix visible-lg\"></div>" if loop.index % 3 == 0}}
+        {{"<div class=\"clearfix visible-md visible-sm\"></div>" if loop.index % 2 == 0}}
         {% endautoescape %}
       {% endfor %}
     </div>

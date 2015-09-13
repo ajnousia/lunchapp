@@ -6,7 +6,7 @@
     <div class="tab-pane{{" active" if weekday[1] == 0}}" id="{{ weekday[0] }}">
       {% for restaurant in restaurants %}
         <div class="col-sm-6 col-lg-4 text-center">
-          <div class="well">
+          <div class="panel panel-default box-shadow">
             <h2>{{restaurant.name}}</h2>
             {% for course in restaurant.menu_list[weekday[1]].courses %}
               <p>
@@ -14,7 +14,7 @@
                 {{component.name}} <i>{{component.get_properties_as_string()}}</i>
                 <br>
               {% endfor %}
-              <i>{{course.price}} €</i>
+              {{course.price}} €
               </p>
             {% endfor %}
           </div>

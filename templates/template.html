@@ -16,6 +16,10 @@
             {% endfor %}
           </div>
         </div>
+        {% autoescape false %}
+        {{"<div class=\"clearfix visible-md\"></div>" if loop.index % 4 == 0}}
+        {{"<div class=\"clearfix visible-sm\"></div>" if loop.index % 3 == 0}}
+        {% endautoescape %}
       {% endfor %}
     </div>
   {% endfor %}

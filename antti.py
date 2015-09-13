@@ -25,7 +25,7 @@ def fetch_restaurants_data():
     for menu in parse_picante_html():
         picante.add_day_menu(menu)
 
-    for i in range(3):
+    for i in range(5):
         restaurants.add_restaurant(bolero)
         restaurants.add_restaurant(atomitie5)
         restaurants.add_restaurant(picante)

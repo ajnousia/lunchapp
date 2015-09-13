@@ -1,6 +1,7 @@
 import datetime
 import json
 import urllib2
+from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 
 def get_json(url):
@@ -179,7 +180,6 @@ class PicanteHTMLParser(HTMLParser):
         
         if tag == 'h3' and self.date_found == 1:
             self.date_found -= 1
-            #DayMenu(self.date[self.day-1])
             
         if tag == 'p' and self.food_found == 1 and self.price_found == 0:
             self.food_found -= 1
@@ -219,11 +219,79 @@ class PicanteHTMLParser(HTMLParser):
             
 
 def parse_picante_html():
-    parser = PicanteHTMLParser()
+    #parser = PicanteHTMLParser()
     url = 'http://www.taitotalo.com/ravintolat/lounaslistat/picante-viikon-lounaslista/'
-    parser.feed(urllib2.urlopen(url).read().decode('utf-8'))
+    #parser.feed(urllib2.urlopen(url).read().decode('utf-8'))
+    html_doc = urllib2.urlopen(url).read().decode('utf-8')
+    soup = BeautifulSoup(html_doc, 'html.parser')
     #print parser.weeks_menu[0].courses[0].components[0].name
-    return parser.weeks_menu
+    weeks_menus = []
+    
+    day = soup.find('h3', 'lunch-list-date')
+    
+    while day != None:
+        date_string = day.string.split(' ')[0]
+        new_menu = DayMenu(datetime.date(datetime.date.today().year,
+                                           int(date_string.split('.')[1]),
+                                           int(date_string.split('.')[0])))
+        print day
+        ul = day.findNext('ul', 'lunch-list-options')
+
+        for elem in ul.contents:
+            food_data = elem.contents[0]
+            print  food_data
+            modified_data = food_data.strip(' \t\n\r')
+            types_string = modified_data[modified_data.rfind(' '):].strip()
+            
+            if types_string.find(',') == -1 and len(types_string) > 3:
+                types_string = ""
+                types = None
+                
+            food_name = modified_data.replace(types_string, '').strip()
+            types = types_string.split(',')
+            
+            try:
+                price = elem.findNext('span').contents[0].split(' ')[0]
+            except AttributeError:
+                price = None  
+                
+            new_course = Course(price)
+            new_course.add_component(Component(food_name, types))    
+            new_menu.add_course(new_course)
+        
+        weeks_menus.append(new_menu)
+        day = day.findNext('h3', 'lunch-list-date')
+        
+    
+    
+        
+    '''for div in soup.find_all('div', { "class" : "lunch-list" }):
+        for div2 in div.find_all('div', { "class" : "lunch-list-date" }):
+            print div2
+    
+    for elem in soup.findAll('span'):
+        if elem.parent.name == 'p':
+            print elem.string
+    
+    '''
+    '''for i in range(0,7):
+        date = start_date + datetime.timedelta(i)
+        json_string = get_json('http://www.sodexo.fi/ruokalistat/output/daily_json/9/{0}/{1}/{2}/fi'.format(str(date.year), str(date.strftime('%m')), str(date.strftime('%d'))))
+        new_menu = DayMenu(date)
+        for lunch in json_string["courses"]:
+            new_course = Course(lunch["price"])
+            try:
+                types = lunch["properties"].split(',')
+            except KeyError:
+                types = None
+            
+            new_course.add_component(Component(lunch["title_fi"], types))
+        new_menu.add_course(new_course)
+        weeks_menus.append(new_menu)
+    return weeks_menus'''
+    
+    
+    return weeks_menus
 
 today = datetime.date.today()
 last_monday = today + datetime.timedelta(days=-today.weekday(), weeks=0)
@@ -241,8 +309,8 @@ picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
 for menu in parse_picante_html():
     picante.add_day_menu(menu)
 
-restaurants.add_restaurant(bolero)
-restaurants.add_restaurant(atomitie5)
+#restaurants.add_restaurant(bolero)
+#restaurants.add_restaurant(atomitie5)
 restaurants.add_restaurant(picante)
         
 

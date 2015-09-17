@@ -4,3 +4,4 @@
 .pydevproject
 ~$*.pptx
 src/
+static_files/*.pkl

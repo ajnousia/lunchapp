@@ -22,7 +22,7 @@ RESTAURANTS = None
 def refresh_restaurants_data(restaurants):
     current_date = datetime.date.today()
     if USE_DEVELOPMENT_DATA == True:
-        path = os.path.join(os.path.dirname(__file__), 'static_files/dymmy_restaurant_data.pkl')
+        path = os.path.join(os.path.dirname(__file__), 'static_files/dummy_restaurant_data.pkl')
         pkl_file = open(path, "rb")
         restaurants = pickle.load(pkl_file)
         pkl_file.close()

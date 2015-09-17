@@ -13,6 +13,7 @@
   <link href='https://fonts.googleapis.com/css?family=Bitter' rel='stylesheet' type='text/css'>
 </head>
 <body>
+  <div id="background"></div>
   <div class="navbar navbar-default navbar-static-top">
     <div class="container">
       <div class="navbar-header">
@@ -22,12 +23,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand"><span>LunchApp</span></a>
+        <a class="navbar-brand">LunchApp <small style="color: rgba(255, 27, 0, 0.85); font-size: 9pt"><span>by EvilTwins</span></small></a>
       </div>
       <!-- <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li class="active">
-            <a href="#">Bootsrap</a>
+            <a href="#">Bootstrap</a>
           </li>
           <li>
             <a href="#">Masonry</a>
@@ -36,7 +37,7 @@
       </div> -->
     </div>
   </div>
-  <div class="section">
+  <div class="section1">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
@@ -52,6 +53,7 @@
       </div>
     </div>
   </div>
+
   <div class="section">
     <div class="container">
       <div class="row">
@@ -73,20 +75,20 @@
       });
 
     function refreshAt(hours, minutes, seconds) {
-    var now = new Date();
-    var then = new Date();
+      var now = new Date();
+      var then = new Date();
 
-    if(now.getHours() > hours ||
-       (now.getHours() == hours && now.getMinutes() > minutes) ||
-        now.getHours() == hours && now.getMinutes() == minutes && now.getSeconds() >= seconds) {
-        then.setDate(now.getDate() + 1);
-    }
-    then.setHours(hours);
-    then.setMinutes(minutes);
-    then.setSeconds(seconds);
+      if(now.getHours() > hours ||
+         (now.getHours() == hours && now.getMinutes() > minutes) ||
+          now.getHours() == hours && now.getMinutes() == minutes && now.getSeconds() >= seconds) {
+          then.setDate(now.getDate() + 1);
+      }
+      then.setHours(hours);
+      then.setMinutes(minutes);
+      then.setSeconds(seconds);
 
-    var timeout = (then.getTime() - now.getTime());
-    setTimeout(function() { window.location.reload(true); }, timeout);
+      var timeout = (then.getTime() - now.getTime());
+      setTimeout(function() { window.location.reload(true); }, timeout);
     }
 
     refreshAt(11,00,00);

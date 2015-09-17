@@ -23,12 +23,10 @@ def parse_picante_html():
         new_menu = DayMenu(datetime.date(datetime.date.today().year,
                                            int(date_string.split('.')[1]),
                                            int(date_string.split('.')[0])))
-        print day
         ul = day.findNext('ul', 'lunch-list-options')
 
         for elem in ul.contents:
             food_data = elem.contents[0]
-            print  food_data
             modified_data = food_data.strip(' \t\n\r')
             types_string = modified_data[modified_data.rfind(' '):].strip()
             
@@ -65,11 +63,11 @@ def parse_atomitie5_json(start_date):
                 types = lunch["properties"].split(',')
             except KeyError:
                 types = None
-            
             new_course.add_component(Component(lunch["title_fi"], types))
-        new_menu.add_course(new_course)
+            new_menu.add_course(new_course)
         weeks_menus.append(new_menu)
     return weeks_menus
+
 
 def parse_bolero_json(start_date):
     json_string = get_json('http://www.amica.fi/modules/json/json/Index?costNumber=3121&firstDay={0}&language=fi'.format(datetime.date.isoformat(start_date)))

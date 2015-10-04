@@ -22,19 +22,7 @@ html {
 body {
   margin: 0;
 }
-#background {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url("../static_files/Seattle_-_Alpine_Self-Serve_Restaurant_-_1960 (kopio).jpg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: 100%;
-  opacity: 0.2;
-  filter:alpha(opacity=80);
-}
+
 article,
 aside,
 details,

@@ -15,7 +15,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-USE_DEVELOPMENT_DATA = False
+USE_DEVELOPMENT_DATA = True
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
 
@@ -89,4 +89,4 @@ class MainPage(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ], debug=False)
+    ], debug=True)

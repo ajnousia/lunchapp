@@ -15,9 +15,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-USE_DEVELOPMENT_DATA = True
+USE_DEVELOPMENT_DATA = False
 LATEST_DATA_FETCH_DATE = None
-RESTAURANTS = None 
+RESTAURANTS = None
 
 def refresh_restaurants_data(restaurants):
     current_date = datetime.date.today()
@@ -39,38 +39,46 @@ def fetch_restaurants_data():
 
     restaurants = Restaurants()
 
-    bolero = Restaurant("Bolero", Address("Atomitie", "2", "00370", "Helsinki"))
-    for menu in parse_bolero_json(last_monday):
-        bolero.add_day_menu(menu)
+    try:
+        bolero = Restaurant("Bolero", Address("Atomitie", "2", "00370", "Helsinki"))
+        for menu in parse_bolero_json(last_monday):
+            bolero.add_day_menu(menu)
+        restaurants.add_restaurant(bolero)
+    except Exception:
+        pass
 
-    atomitie5 = Restaurant("Atomitie 5", Address("Atomitie", "5", "00370", "Helsinki"))
-    for menu in parse_atomitie5_json(last_monday):
-        atomitie5.add_day_menu(menu)
+    try:
+        atomitie5 = Restaurant("Atomitie 5", Address("Atomitie", "5", "00370", "Helsinki"))
+        for menu in parse_atomitie5_json(last_monday):
+            atomitie5.add_day_menu(menu)
+        restaurants.add_restaurant(atomitie5)
+    except Exception:
+        pass
 
-    picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
-    for menu in parse_picante_html():
-        picante.add_day_menu(menu)
+    try:
+        picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
+        for menu in parse_picante_html():
+            picante.add_day_menu(menu)
+        restaurants.add_restaurant(picante)
+    except Exception:
+        pass
 
-    restaurants.add_restaurant(bolero)
-    restaurants.add_restaurant(atomitie5)
-    restaurants.add_restaurant(picante)
-    
     LATEST_DATA_FETCH_DATE = today
-    
+
     return restaurants
-    
-    # TODO sometimes HTTPException is raised 
-    
+
+    # TODO sometimes HTTPException is raised
+
 
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
-    
+
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
         today = datetime.date.today()
-        
+
         restaurants = refresh_restaurants_data(RESTAURANTS)
-        
+
         template_values = {
             "restaurants": restaurants.restaurants
         }
@@ -81,4 +89,4 @@ class MainPage(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ], debug=True)
+    ], debug=False)

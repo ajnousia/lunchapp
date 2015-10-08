@@ -17,7 +17,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
-USE_DEVELOPMENT_DATA = False
+USE_DEVELOPMENT_DATA = True
 
 
 class MainPage(webapp2.RequestHandler):
@@ -33,7 +33,7 @@ class MainPage(webapp2.RequestHandler):
             "restaurants": restaurants.restaurants
         }
 
-        template = JINJA_ENVIRONMENT.get_template('template.html')
+        template = JINJA_ENVIRONMENT.get_template('tab_content.html')
         self.response.write(template.render(template_values))
 
 

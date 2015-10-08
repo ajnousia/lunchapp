@@ -6614,14 +6614,9 @@ body {
   min-width: 100%;
 }
 .section {
+  padding: 35px 0;
   position: relative;
   padding: 35px 0;
-}
-
-.section1 {
-  position: relative;
-  padding: 35px 0;
-  background-color: #FFF;
 }
 
 .section .background-image {

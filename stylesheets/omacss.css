@@ -1,4 +1,5 @@
 .menupanel {
+  background-image: url("/static_files/html_bg_paper.jpg");
   margin-bottom: 20px;
   background-color: #FFF;
   border: 0.8px solid rgba(128, 128, 128, 0.3);
@@ -12,7 +13,7 @@
 #upper_left {
   width: 50px;
   height: 50px;
-  background-image: url("/static_files/upper_left.jpg");
+  background-image: url("/static_files/upper_left.png");
   position: absolute;
   top: 3px;
   left: 18px;
@@ -21,7 +22,7 @@
 #upper_right {
   width: 50px;
   height: 50px;
-  background-image: url("/static_files/upper_right.jpg");
+  background-image: url("/static_files/upper_right.png");
 	position: absolute;
   top: 3px;
   right: 18px;
@@ -30,7 +31,7 @@
 #lower_left {
   width: 50px;
   height: 50px;
-  background-image: url("/static_files/lower_left.jpg");
+  background-image: url("/static_files/lower_left.png");
 	position: absolute;
   bottom: 23px;
   left: 18px;
@@ -39,7 +40,7 @@
 #lower_right {
   width: 50px;
   height: 50px;
-  background-image: url("/static_files/lower_right.jpg");
+  background-image: url("/static_files/lower_right.png");
 	position: absolute;
 	bottom: 23px;
 	right: 18px;

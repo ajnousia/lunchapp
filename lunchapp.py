@@ -25,7 +25,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
-USE_DEVELOPMENT_DATA = False
+USE_DEVELOPMENT_DATA = True
 
 
 class MainPage(webapp2.RequestHandler):
@@ -47,9 +47,9 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-app = webapp2.WSGIApplication([ 
+app = webapp2.WSGIApplication([
     ('/', MainPage),
-    ], debug=False)
+    ], debug=True)
 
 
 # Kun depolyaat appengineen:

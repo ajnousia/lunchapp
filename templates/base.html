@@ -25,16 +25,17 @@
         </button>
         <a class="navbar-brand">LunchApp</a>
       </div>
-      <!-- <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+      <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li class="active">
-            <a href="#">Bootstrap</a>
-          </li>
           <li>
-            <a href="#">Masonry</a>
+            {% if user %}
+              <a href="#">Hello, {{user.nickname()}}</a>
+            {% else %}
+              <a href= {{login_url}} >Login</a>
+            {% endif %}
           </li>
         </ul>
-      </div> -->
+      </div>
     </div>
   </div>
   {% block content %}{% endblock %}

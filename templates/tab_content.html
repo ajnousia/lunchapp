@@ -19,7 +19,9 @@
                   {{component.name}} <i>{{component.get_properties_as_string()}}</i>
                   <br>
                 {% endfor %}
-                {{course.price}} €
+                {% if course.price is not none %}
+                  {{course.price}} €
+                {% endif %}
                 </p>
               {% endfor %}
             </div>

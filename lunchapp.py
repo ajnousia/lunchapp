@@ -12,13 +12,20 @@ from unclassified_functions import *
 from classes import *
 
 
+
+# Kun depolyaat appengineen:
+# 1. Vaihda USE_DEVELOPMENT_DATA = False
+# 2. Vaihda debug=False
+
+
+
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
-USE_DEVELOPMENT_DATA = True
+USE_DEVELOPMENT_DATA = False
 
 
 class MainPage(webapp2.RequestHandler):
@@ -40,6 +47,11 @@ class MainPage(webapp2.RequestHandler):
         self.response.write(template.render(template_values))
 
 
-app = webapp2.WSGIApplication([
+app = webapp2.WSGIApplication([ 
     ('/', MainPage),
-    ], debug=True)
+    ], debug=False)
+
+
+# Kun depolyaat appengineen:
+# 1. Vaihda USE_DEVELOPMENT_DATA = False
+# 2. Vaihda debug=False

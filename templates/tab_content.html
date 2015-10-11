@@ -1,4 +1,5 @@
 {% extends "menus.html" %}
+{% set active_page = "index" %}
 
 {% block tab_content %}
 {% set weekdays = [['Maanantai', 0], ['Tiistai', 1], ['Keskiviikko', 2], ['Torstai', 3], ['Perjantai', 4]] %}
@@ -6,12 +7,12 @@
   <div class="tab-pane{{" active" if weekday[1] == 0}}" id="{{ weekday[0] }}">
     {% for restaurant in restaurants %}
       <div class="col-sm-6 col-lg-4 text-center">
-        <div class="menupanel panel-default box-shadow">
+        <div class="panel-default box-shadow">
           <!-- <div id="upper_left"></div>
           <div id="upper_right"></div>
           <div id="lower_left"></div>
           <div id="lower_right"></div> -->
-          <div class="panel-body">
+          <div class="panel-default">
             <h2>{{restaurant.name}}</h2>
             {% for course in restaurant.menu_list[weekday[1]].courses %}
               <p>
@@ -22,7 +23,7 @@
               {% if course.price is not none %}
                 {{course.price}} €
               {% endif %}
-              </p>
+            </p>
             {% endfor %}
           </div>
         </div>

@@ -60,6 +60,8 @@ class SettingsPage(webapp2.RequestHandler):
     def get(self):
         if users.get_current_user() != None:
             template_values = create_dictionary(self)
+            restaurants = refresh_restaurants_data(RESTAURANTS)
+            template_values["restaurants"] = restaurants.restaurants
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))

@@ -4,28 +4,25 @@
 {% block content %}
 <div class="section">
   <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Panel title</h3>
-          </div>
-          <div class="panel-body">
-            <p>Panel content</p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="panel panel-primary">
-          <div class="panel-heading">
-            <h3 class="panel-title">Panel title</h3>
-          </div>
-          <div class="panel-body">
-            <p>Panel content</p>
-          </div>
-        </div>
-      </div>
-    </div>
+    <ul class="list-group">
+    {% for restaurant in restaurants %}
+      <li class="list-group-item">{{restaurant.name}}<span id="ok-sign"> </span></li>
+    {% endfor %}
+    </ul>
   </div>
 </div>
+
+<script>
+  $(document).ready(function(){
+      $('.list-group-item').click(function(event){
+        if ($(this).children("span").hasClass("glyphicon glyphicon-ok")) {
+          $(this).children("span").removeClass("glyphicon glyphicon-ok");
+        }
+        else {
+          $(this).children("span").addClass("glyphicon glyphicon-ok");
+        }
+      var listItems = $('.list-group');
+      })
+  });
+</script>
 {% endblock %}

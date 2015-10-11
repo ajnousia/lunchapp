@@ -27,13 +27,19 @@
         </button>
         <a class="navbar-brand">LunchApp</a>
       </div>
+      {% set navigation_bar = [
+        ('/', 'index', 'Viikon ruokalistat'),
+        ('/asetukset', 'asetukset', 'Asetukset'),
+        ('/about', 'about', 'About')
+      ] -%}
+      {% set active_page = active_page|default('index') -%}
       <div class="collapse navbar-collapse" id="navbar-ex-collapse">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Viikon ruokalistat<span class="sr-only">(current)</span></a></li>
-          {% if user %}
-            <li><a href="#">Asetukset</a></li>
-          {% endif %}
-          <li><a href="#">About</a></li>
+          {% for href, id, caption in navigation_bar %}
+            <li{% if id == active_page %} class="active"{% endif%}>
+              <a href="{{ href|e }}">{{ caption|e }}</a>
+            </li>
+          {% endfor %}
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>

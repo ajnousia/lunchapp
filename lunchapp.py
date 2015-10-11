@@ -27,28 +27,34 @@ LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
 USE_DEVELOPMENT_DATA = True
 
+def create_dictionary(handler):
+    user = users.get_current_user()
+    values = {}
+    values["login_url"] = users.create_login_url(handler.request.uri)
+    values["user"] = user
+    values["logout_url"] = users.create_logout_url(handler.request.uri)
+    return values
 
 class MainPage(webapp2.RequestHandler):
 
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
-
-        template_values = {}
-        user = users.get_current_user()
-        template_values["login_url"] = users.create_login_url(self.request.uri)
-        template_values["user"] = user
-        template_values["logout_url"] = users.create_logout_url(self.request.uri)
-
+        template_values = create_dictionary(self)
         restaurants = refresh_restaurants_data(RESTAURANTS)
-
         template_values["restaurants"] = restaurants.restaurants
-
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')
         self.response.write(template.render(template_values))
 
+class AboutPage(webapp2.RequestHandler):
+    def get(self):
+        template_values = create_dictionary(self)
+        self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+        template = JINJA_ENVIRONMENT.get_template('about.html')
+        self.response.write(template.render(template_values))
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
+    (r'/about', AboutPage),
     ], debug=True)
 
 

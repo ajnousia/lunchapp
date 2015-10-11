@@ -29,7 +29,7 @@
       </div>
       {% set navigation_bar = [
         ('/', 'index', 'Viikon ruokalistat'),
-        ('/asetukset', 'asetukset', 'Asetukset'),
+        ('/settings', 'settings', 'Asetukset'),
         ('/about', 'about', 'About')
       ] -%}
       {% set active_page = active_page|default('index') -%}
@@ -37,9 +37,9 @@
         <ul class="nav navbar-nav">
           {% for href, id, caption in navigation_bar %}
             <li{% if id == active_page %} class="active"{% endif%}>
-              <a href="{{ href|e }}">{{ caption|e }}</a>
-            </li>
+              <a href="{{ href|e }}">{{ caption|e }}</a></li>
           {% endfor %}
+          <!-- TODO -->
         </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>

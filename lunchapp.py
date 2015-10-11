@@ -58,10 +58,13 @@ class AboutPage(webapp2.RequestHandler):
 class SettingsPage(webapp2.RequestHandler):
 
     def get(self):
-        template_values = create_dictionary(self)
-        self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
-        template = JINJA_ENVIRONMENT.get_template('settings.html')
-        self.response.write(template.render(template_values))
+        if users.get_current_user() != None:
+            template_values = create_dictionary(self)
+            self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+            template = JINJA_ENVIRONMENT.get_template('settings.html')
+            self.response.write(template.render(template_values))
+        else:
+            self.redirect('/')
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

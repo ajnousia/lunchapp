@@ -29,16 +29,8 @@ class MainPage(webapp2.RequestHandler):
         template_values = {}
         user = users.get_current_user()
         template_values["login_url"] = users.create_login_url(self.request.uri)
-
-        asdfasdfasdfasdfasdf
-        asdf
-
-        if user:
-            pass
-        else:
-            pass
-
         template_values["user"] = user
+        template_values["logout_url"] = users.create_logout_url(self.request.uri)
 
         restaurants = refresh_restaurants_data(RESTAURANTS)
 

@@ -3,20 +3,32 @@ runtime: python27
 api_version: 1
 threadsafe: true
 
+
+
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+
+- url: /jquery
+  static_dir: bower_components/jquery/dist
+
 - url: /bootstrap
-  static_dir: bootstrap
-- url: /freewall
-  static_dir: freewall
+  static_dir: bower_components/bootstrap/dist
+
+- url: /fonts
+  static_dir: bower_components/bootstrap/dist/fonts
+
 - url: /scripts
   static_dir: scripts
+
 - url: /static_files
   static_dir: static_files
   application_readable: true
+
 - url: /.*
   script: lunchapp.app
+
+
 
 libraries:
 - name: webapp2

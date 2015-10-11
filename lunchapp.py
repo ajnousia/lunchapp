@@ -30,6 +30,7 @@ class MainPage(webapp2.RequestHandler):
         user = users.get_current_user()
         template_values["login_url"] = users.create_login_url(self.request.uri)
 
+        asdfasdfasdfasdfasdf
         asdf
 
         if user:

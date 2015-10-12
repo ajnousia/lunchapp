@@ -19,17 +19,13 @@ from classes import *
 # 1. Vaihda USE_DEVELOPMENT_DATA = False
 # 2. Vaihda debug=False
 
-
-
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
-VISIBLE_RESTAURANTS = []
-VISIBLE_RESTAURANT_NAMES = []
-RELOAD_RESTAURANTS = True
+USER_RESTAURANTS = []
 USE_DEVELOPMENT_DATA = False
 
 def create_dictionary(handler):
@@ -45,11 +41,13 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
         template_values = create_dictionary(self)
-        if len(VISIBLE_RESTAURANT_NAMES) > 0:
-            logging.debug(VISIBLE_RESTAURANT_NAMES[0])
-        restaurants = refresh_restaurants_data(RESTAURANTS)
-        restaurants = refresh_restaurants_data_using_datastore(RESTAURANTS, users.get_current_user())
-        template_values["restaurants"] = restaurants.restaurants
+        user = users.get_current_user()
+        if RESTAURANTS == None:
+            refresh_restaurants_data_using_datastore()
+        if user:
+            template_values["restaurants"] = get_user_restaurants(user).restaurants
+        else:
+            template_values["restaurants"] = RESTAURANTS.restaurants
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')
         self.response.write(template.render(template_values))
 
@@ -68,9 +66,10 @@ class SettingsPage(webapp2.RequestHandler):
     def get(self):
         if users.get_current_user() != None:
             template_values = create_dictionary(self)
-            restaurants = refresh_restaurants_data(RESTAURANTS)
-            template_values["restaurants"] = restaurants.restaurants
-            template_values["users_restaurants"] = VISIBLE_RESTAURANT_NAMES
+            if RESTAURANTS == None:
+                refresh_restaurants_data_using_datastore()
+            template_values["restaurant_names"] = RESTAURANTS.get_restaurant_names()
+            template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))
@@ -79,8 +78,9 @@ class SettingsPage(webapp2.RequestHandler):
 
     def post(self):
         restaurant_name = self.request.get('restaurant_name').strip(' \t\n\r')
-        type = self.request.get('type')
-        global VISIBLE_RESTAURANT_NAMES
+        list_operation = self.request.get('type')
+
+        global USER_RESTAURANTS
         user = users.get_current_user()
 
         query = ndb.gql("SELECT * FROM UserPrefs WHERE user = :1", user)
@@ -89,25 +89,23 @@ class SettingsPage(webapp2.RequestHandler):
             logging.error("more than one UserPrefs object for user %s", str(user))
         elif len(results) == 0:
             logging.debug("creating UserPrefs object for user %s", str(user))
-            VISIBLE_RESTAURANT_NAMES = [restaurant_name]
             userprefs = UserPrefs(user=user, restaurants=[RestaurantEntity(name=restaurant_name)])
             userprefs.put()
         else:
             entity = UserPrefs.query(UserPrefs.user==user).get()
-            if type == "add":
-                VISIBLE_RESTAURANT_NAMES.append(restaurant_name)
-            else:
-                VISIBLE_RESTAURANT_NAMES.remove(restaurant_name)
+            restaurant_obj = RESTAURANTS.get_restaurant_by_name(restaurant_name)
+            if list_operation == "add":
+                USER_RESTAURANTS.add_restaurant(restaurant_obj)
+            else: # "remove"
+                USER_RESTAURANTS.remove_restaurant(restaurant_obj)
             updated_restaurant_entities = []
-            for name in VISIBLE_RESTAURANT_NAMES:
+            for name in USER_RESTAURANTS.get_restaurant_names():
                 updated_restaurant_entities.append(RestaurantEntity(name=name))
             entity.restaurants = updated_restaurant_entities
             entity.put()
 
-        logging.debug(VISIBLE_RESTAURANT_NAMES[0])
 
 
-logging.getLogger().setLevel(logging.DEBUG)
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     (r'/settings', SettingsPage),

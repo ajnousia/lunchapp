@@ -6,8 +6,11 @@
   <div class="container">
     <ul class="list-group">
     {% for restaurant in restaurants %}
-      <li class="list-group-item">{{restaurant.name}}
-      <span id="ok-sign"{{" class=\"glyphicon glyphicon-ok\"" if users_restaurants != None and restaurant.name in users_restaurants}}></span></li>
+      <li class="list-group-item" class="unselectable">{{restaurant.name}} <span id="ok-sign"
+        {% if restaurant.name in users_restaurants %}
+          class="glyphicon glyphicon-ok"
+        {% endif %}
+        ></span></li>
     {% endfor %}
     </ul>
   </div>

@@ -1,6 +1,7 @@
 import datetime
 import os
 import lunchapp
+import logging
 from parsefunctions import *
 from data_store_classes import *
 
@@ -12,6 +13,7 @@ def refresh_restaurants_data(restaurants):
         pkl_file = open(path, "rb")
         restaurants = pickle.load(pkl_file)
         pkl_file.close()
+        lunchapp.RESTAURANTS = restaurants
         return restaurants
     if lunchapp.LATEST_DATA_FETCH_DATE is None or lunchapp.LATEST_DATA_FETCH_DATE != current_date:
         restaurants = fetch_restaurants_data()
@@ -56,34 +58,37 @@ def fetch_restaurants_data():
 
 
 def refresh_restaurants_data_using_datastore(restaurants, user):
+    current_date = datetime.date.today()
+
     if lunchapp.USE_DEVELOPMENT_DATA == True:
         if restaurants == None:
-            path = os.path.join(os.path.dirname(__file__), 'static_files/dummy_restaurant_data.pkl')
-            pkl_file = open(path, "rb")
-            restaurants = pickle.load(pkl_file)
-            pkl_file.close()
+            restaurants = pickle.loads(Storage.query(ancestor = ndb.Key('top_level_key', 'second_level_key')).get().pickled_data)
+            lunchapp.RESTAURANTS = restaurants
     else:
         if lunchapp.LATEST_DATA_FETCH_DATE is None or lunchapp.LATEST_DATA_FETCH_DATE != current_date:
             restaurants = fetch_restaurants_data()
+            #obj = Storage(pickled_data = pickle.dumps(restaurants))
+            #obj.put()
+
+    logging.debug(restaurants)
 
     if user != None:
-        visible_restaurants = None
-        if lunchapp.VISIBLE_RESTAURANT_NAMES == None:
-            try:
-                users_restaurants = UserEntity.query(UserEntity.user==user).get().restaurants
-                for restaurant in restaurants:
-                    for restaurant_entity in users_restaurants:
-                        if restaurant.name == restaurant_entity.name:
-                            visible_restaurants.append(restaurant)
-            except AttributeError:
-                return restaurants
-        else:
-            for restaurant in restaurants:
-                if restaurant.name in lunchapp.VISIBLE_RESTAURANT_NAMES:
-                    visible_restaurants.append(restaurant)
+        visible_restaurants = Restaurants()
+        names = []
+        #if len(lunchapp.VISIBLE_RESTAURANT_NAMES) == 0:
+        try:
+            users_restaurants = UserPrefs.query(UserPrefs.user==user).get().restaurants
+            for restaurant in restaurants.restaurants:
+                for restaurant_entity in users_restaurants:
+                    if restaurant.name == restaurant_entity.name:
+                        visible_restaurants.add_restaurant(restaurant)
+                        names.append(restaurant.name)
 
-        lunchapp.VISIBLE_RESTAURANTS = visible_restaurants
-        return visible_restaurants
+            lunchapp.VISIBLE_RESTAURANTS = visible_restaurants
+            lunchapp.VISIBLE_RESTAURANT_NAMES = names
+            return visible_restaurants
+        except AttributeError:
+            return restaurants
     else:
         return restaurants
 

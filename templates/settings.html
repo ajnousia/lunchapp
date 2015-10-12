@@ -6,7 +6,8 @@
   <div class="container">
     <ul class="list-group">
     {% for restaurant in restaurants %}
-      <li class="list-group-item">{{restaurant.name}}<span id="ok-sign"> </span></li>
+      <li class="list-group-item">{{restaurant.name}}
+      <span id="ok-sign"{{" class=\"glyphicon glyphicon-ok\"" if users_restaurants != None and restaurant.name in users_restaurants}}></span></li>
     {% endfor %}
     </ul>
   </div>
@@ -15,13 +16,16 @@
 <script>
   $(document).ready(function(){
       $('.list-group-item').click(function(event){
+        var type;
         if ($(this).children("span").hasClass("glyphicon glyphicon-ok")) {
           $(this).children("span").removeClass("glyphicon glyphicon-ok");
+          type = "remove"
         }
         else {
           $(this).children("span").addClass("glyphicon glyphicon-ok");
+          type = "add"
         }
-      var listItems = $('.list-group');
+      $.post( '/settings', { restaurant_name: $(this).text(), type: type } );
       })
   });
 </script>

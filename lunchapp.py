@@ -7,6 +7,7 @@ import os
 import urllib
 import pickle
 from google.appengine.api import users
+from google.appengine.ext import ndb
 
 from unclassified_functions import *
 from classes import *
@@ -25,6 +26,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
+VISIBLE_RESTAURANTS = None
+VISIBLE_RESTAURANT_NAMES = None
+RELOAD_RESTAURANTS = True
 USE_DEVELOPMENT_DATA = True
 
 def create_dictionary(handler):
@@ -40,7 +44,8 @@ class MainPage(webapp2.RequestHandler):
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
         template_values = create_dictionary(self)
-        restaurants = refresh_restaurants_data(RESTAURANTS)
+        restaurants = VISIBLE_RESTAURANTS
+        restaurants = refresh_restaurants_data_using_datastore(RESTAURANTS, users.get_current_user())
         template_values["restaurants"] = restaurants.restaurants
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')
         self.response.write(template.render(template_values))
@@ -59,14 +64,40 @@ class SettingsPage(webapp2.RequestHandler):
 
     def get(self):
         if users.get_current_user() != None:
+            print VISIBLE_RESTAURANT_NAMES
             template_values = create_dictionary(self)
             restaurants = refresh_restaurants_data(RESTAURANTS)
             template_values["restaurants"] = restaurants.restaurants
+            template_values["users_restaurants"] = VISIBLE_RESTAURANT_NAMES
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))
         else:
             self.redirect('/')
+
+    def post(self):
+        restaurant_name = self.request.get('restaurant_name')
+        type = self.request.get('type')
+        global VISIBLE_RESTAURANT_NAMES
+        user = users.get_current_user()
+        if UserEntity.query(UserEntity.user==user).get(keys_only=True):
+            VISIBLE_RESTAURANT_NAMES = [restaurant_name]
+            entity = UserEntity(user=user, restaurants=[RestaurantEntity(restaurant_name)])
+        else:
+            entity = UserEntity.query(UserEntity.user==user).get()
+            if type == "add":
+                VISIBLE_RESTAURANT_NAMES.append(restaurant_name)
+            else:
+                VISIBLE_RESTAURANT_NAMES.remove(restaurant_name)
+            updated_restaurant_entities = []
+            for name in VISIBLE_RESTAURANT_NAMES:
+                updated_restaurant_entities.append(RestaurantEntity(name=name))
+            entity.restaurants = updated_restaurant_entities
+
+        print VISIBLE_RESTAURANT_NAMES
+        entity.put()
+
+
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

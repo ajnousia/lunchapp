@@ -7,12 +7,12 @@
   <div class="tab-pane{{" active" if weekday[1] == 0}}" id="{{ weekday[0] }}">
     {% for restaurant in restaurants %}
       <div class="col-sm-6 col-lg-4 text-center">
-        <div class="panel-default box-shadow">
+        <div class="menupanel panel-default box-shadow">
           <!-- <div id="upper_left"></div>
           <div id="upper_right"></div>
           <div id="lower_left"></div>
           <div id="lower_right"></div> -->
-          <div class="panel-default">
+          <div class="panel-body">
             <h2>{{restaurant.name}}</h2>
             {% for course in restaurant.menu_list[weekday[1]].courses %}
               <p>

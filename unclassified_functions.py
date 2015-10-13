@@ -5,22 +5,6 @@ import logging
 from parsefunctions import *
 from data_store_classes import *
 
-def refresh_restaurants_data(restaurants):
-    current_date = datetime.date.today()
-
-    if lunchapp.USE_DEVELOPMENT_DATA == True:
-        path = os.path.join(os.path.dirname(__file__), 'static_files/dummy_restaurant_data.pkl')
-        pkl_file = open(path, "rb")
-        restaurants = pickle.load(pkl_file)
-        pkl_file.close()
-        lunchapp.RESTAURANTS = restaurants
-        return restaurants
-    if lunchapp.LATEST_DATA_FETCH_DATE is None or lunchapp.LATEST_DATA_FETCH_DATE != current_date:
-        restaurants = fetch_restaurants_data()
-        return restaurants
-    else:
-        return restaurants
-
 
 def fetch_restaurants_data():
     today = datetime.date.today()
@@ -47,8 +31,6 @@ def fetch_restaurants_data():
         restaurants.add_restaurant(picante)
     except Exception:
         pass
-    lunchapp.LATEST_DATA_FETCH_DATE = today
-    lunchapp.RESTAURANTS = restaurants
     return restaurants
 
 
@@ -85,12 +67,10 @@ def refresh_and_get_restaurants_data_using_datastore():
         parent_datastore_key = ndb.Key("Datastore", "Pickled_restaurants_objects")
         restaurants = PickledRestaurants(parent=parent_datastore_key, pickled_restaurants=restaurants_object, week_number=current_week_number)
         restaurants.put()
-        lunchapp.RESTAURANTS = restaurants # TODO paivita niin, etta tama voidaan poistaa
         return restaurants_object
     else:
         restaurants_object = fetch_restaurants_data()
         parent_datastore_key = ndb.Key("Datastore", "Pickled_restaurants_objects")
         restaurants = PickledRestaurants(parent=parent_datastore_key, pickled_restaurants=restaurants_object, week_number=current_week_number)
         restaurants.put()
-        lunchapp.RESTAURANTS = restaurants_object # TODO paivita niin, etta tama voidaan poistaa
         return restaurants_object

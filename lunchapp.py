@@ -24,7 +24,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-USER_RESTAURANTS = None
+USER_RESTAURANTS = Restaurants()
 USE_DEVELOPMENT_DATA = False
 
 def create_dictionary_with_user_loginURL_and_logoutURL(handler):

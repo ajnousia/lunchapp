@@ -38,7 +38,6 @@ def get_user_restaurants(user):
     restaurants = lunchapp.get_restaurants_data().restaurants
     if UserPrefs.query(UserPrefs.user==user).get() is None:
         return lunchapp.get_restaurants_data()
-    print type(UserPrefs.query(UserPrefs.user==user).get())
     user_restaurants = Restaurants()
     restaurant_entities = UserPrefs.query(UserPrefs.user==user).get().restaurants
     for restaurant in restaurants:

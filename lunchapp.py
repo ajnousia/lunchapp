@@ -80,7 +80,6 @@ class MainPage(webapp2.RequestHandler):
 
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
-
         template_values = create_dictionary_with_user_loginURL_and_logoutURL(self).copy()
         template_values.update(get_template_values_for_MainPage())
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')

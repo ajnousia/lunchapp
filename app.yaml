@@ -12,6 +12,12 @@ handlers:
 - url: /jquery
   static_dir: bower_components/jquery/dist
 
+- url: /list.js
+  static_dir: bower_components/list.js/dist
+
+- url: /list.fuzzysearch.js
+  static_dir: bower_components/list.fuzzysearch.js/dist
+
 - url: /bootstrap
   static_dir: bower_components/bootstrap/dist
 

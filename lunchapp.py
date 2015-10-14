@@ -25,7 +25,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     autoescape=True)
 LATEST_DATA_FETCH_DATE = None
 RESTAURANTS = None
-USER_RESTAURANTS = []
+USER_RESTAURANTS = None
 USE_DEVELOPMENT_DATA = False
 
 def create_dictionary(handler):
@@ -45,7 +45,10 @@ class MainPage(webapp2.RequestHandler):
         if RESTAURANTS == None:
             refresh_restaurants_data_using_datastore()
         if user:
-            template_values["restaurants"] = get_user_restaurants(user).restaurants
+            try:
+                template_values["restaurants"] = get_user_restaurants(user).restaurants
+            except AttributeError:
+                template_values["restaurants"] = RESTAURANTS.restaurants
         else:
             template_values["restaurants"] = RESTAURANTS.restaurants
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')
@@ -69,7 +72,10 @@ class SettingsPage(webapp2.RequestHandler):
             if RESTAURANTS == None:
                 refresh_restaurants_data_using_datastore()
             template_values["restaurant_names"] = RESTAURANTS.get_restaurant_names()
-            template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
+            if USER_RESTAURANTS != None:
+                template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
+            else:
+                template_values["user_restaurant_names"] = []
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))

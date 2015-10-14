@@ -3,22 +3,33 @@
 
 {% block content %}
 <div class="section">
-  <div class="container">
-    <ul class="list-group">
+  <div class="container" id="restaurants">
+    <input type="text" class="fuzzy-search"/>
+    <ul class="list">
     {% for restaurant_name in restaurant_names %}
-      <li class="list-group-item" class="unselectable">{{restaurant_name}} <span id="ok-sign"
+      <li class="list-group-item" class="unselectable">
+        <h3 class="name">{{restaurant_name}} <span id="ok-sign"
         {% if restaurant_name in user_restaurant_names %}
           class="glyphicon glyphicon-ok"
         {% endif %}
-        ></span></li>
+          ></span>
+        </h3>
+      </li>
     {% endfor %}
     </ul>
   </div>
 </div>
 
+<script type="text/javascript">
+  var restaurantList = new List('restaurants', {
+    valueNames: ['name'],
+    plugins: [ ListFuzzySearch() ]
+  });
+</script>
+
 <script>
   $(document).ready(function(){
-      $('.list-group-item').click(function(event){
+      $('.list-group-item .h3').click(function(event){
         var type;
         if ($(this).children("span").hasClass("glyphicon glyphicon-ok")) {
           $(this).children("span").removeClass("glyphicon glyphicon-ok");

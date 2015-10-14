@@ -24,7 +24,7 @@ JINJA_ENVIRONMENT = jinja2.Environment(
     extensions=['jinja2.ext.autoescape'],
     autoescape=True)
 
-USER_RESTAURANTS = []
+USER_RESTAURANTS = None
 USE_DEVELOPMENT_DATA = False
 
 def create_dictionary_with_user_loginURL_and_logoutURL(handler):
@@ -38,10 +38,13 @@ def create_dictionary_with_user_loginURL_and_logoutURL(handler):
 def get_template_values_for_MainPage():
     template_values = {}
     user = users.get_current_user()
+    restaurants = get_restaurants_data()
     if user:
-        template_values["restaurants"] = get_user_restaurants(user).restaurants
+        try:
+            template_values["restaurants"] = get_user_restaurants(user).restaurants
+        except AttributeError:
+            template_values["restaurants"] = restaurants.restaurants
     else:
-        restaurants = get_restaurants_data()
         template_values["restaurants"] = restaurants.restaurants
     return template_values
 
@@ -77,6 +80,7 @@ class MainPage(webapp2.RequestHandler):
 
     def get(self):
         self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
+
         template_values = create_dictionary_with_user_loginURL_and_logoutURL(self).copy()
         template_values.update(get_template_values_for_MainPage())
         template = JINJA_ENVIRONMENT.get_template('tab_content.html')
@@ -99,7 +103,10 @@ class SettingsPage(webapp2.RequestHandler):
             template_values = create_dictionary_with_user_loginURL_and_logoutURL(self)
             restaurants = get_restaurants_data()
             template_values["restaurant_names"] = restaurants.get_restaurant_names()
-            template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
+            if USER_RESTAURANTS != None:
+                template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
+            else:
+                template_values["user_restaurant_names"] = []
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))

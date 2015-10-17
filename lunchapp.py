@@ -29,18 +29,20 @@ USE_DEVELOPMENT_DATA = False
 
 def get_user():
     user = users.get_current_user()
+    parent_key = ndb.Key("Datastore", "Accounts")
     if user:
-        # query = ndb.gql("SELECT * FROM UserPrefs WHERE user = :1", user)
-        # results = query.fetch(2)
-        # if len(results) > 1:
-        #     logging.error("more than one UserPrefs object for user %s", str(user))
-        # elif len(results) == 0:
-        #     logging.debug("creating UserPrefs object for user %s", str(user))
-        #     userprefs = UserPrefs(user=user, restaurants=[RestaurantEntity(name=restaurant_name)])
-        #     userprefs.put()
-        return user
+        accounts_query = Account.query(ancestor=parent_key).filter(Account.user_id == user.user_id())
+        accounts = accounts_query.fetch(2)
+        if len(accounts) > 1:
+            print "Duplicate user. This shouldn't happen..."
+        if len(accounts) > 0:
+            return user
+        else:
+            account = Account(parent = parent_key, user_email = user.email(), user_id = user.user_id())
+            account.put()
+            return user
     else:
-        return None
+        return False
 
 
 def create_dictionary_with_user_loginURL_and_logoutURL(handler):

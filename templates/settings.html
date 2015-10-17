@@ -44,7 +44,7 @@
                 url: '/settings',
                 data: { restaurant_name: $(this).text(), type: type },
                 success: function (result) {
-                    alert('Success');
+                    console.log('Success');
                  },
                  error: function (xhr, ajaxOptions, thrownError) {
                      console.log(xhr.status);

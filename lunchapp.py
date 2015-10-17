@@ -65,10 +65,10 @@ def get_template_values_for_MainPage():
     return template_values
 
 def get_restaurants_data():
-    if is_uptodate_data_available_in_memory():
-        return get_restaurant_data_from_memory()
-    else:
-        return refresh_and_get_restaurants_data_using_datastore()
+    # if is_uptodate_data_available_in_memory():
+    #     return get_restaurant_data_from_memory()
+    # else:
+    return refresh_and_get_restaurants_data_using_datastore()
 
 def is_uptodate_data_available_in_memory():
     restaurants = fetch_latest_week_restaurants()

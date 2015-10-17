@@ -31,6 +31,15 @@ def fetch_restaurants_data():
         restaurants.add_restaurant(picante)
     except Exception:
         pass
+    sellon_ravintolat = ["marian-konditoria", "ravintola-base", "cafe-buffo", "ravintola-retro", "rax-buffet", "glo-grill-kitchen", "chicos"]
+    for name in sellon_ravintolat:
+        restaurant = Restaurant(name.replace("-"," ").replace("ravintola","").strip().title(), None)
+        try:
+            for menu in parse_sello_html(name, last_monday):
+                restaurant.add_day_menu(menu)
+            restaurants.add_restaurant(restaurant)
+        except Exception as error:
+            pass    
     return restaurants
 
 

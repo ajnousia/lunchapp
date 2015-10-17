@@ -27,8 +27,24 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 USER_RESTAURANTS = Restaurants()
 USE_DEVELOPMENT_DATA = False
 
-def create_dictionary_with_user_loginURL_and_logoutURL(handler):
+def get_user():
     user = users.get_current_user()
+    if user:
+        # query = ndb.gql("SELECT * FROM UserPrefs WHERE user = :1", user)
+        # results = query.fetch(2)
+        # if len(results) > 1:
+        #     logging.error("more than one UserPrefs object for user %s", str(user))
+        # elif len(results) == 0:
+        #     logging.debug("creating UserPrefs object for user %s", str(user))
+        #     userprefs = UserPrefs(user=user, restaurants=[RestaurantEntity(name=restaurant_name)])
+        #     userprefs.put()
+        return user
+    else:
+        return None
+
+
+def create_dictionary_with_user_loginURL_and_logoutURL(handler):
+    user = get_user()
     return_dict = {
         "user" : user,
         "login_url" : users.create_login_url(handler.request.uri),
@@ -37,7 +53,7 @@ def create_dictionary_with_user_loginURL_and_logoutURL(handler):
 
 def get_template_values_for_MainPage():
     template_values = {}
-    user = users.get_current_user()
+    user = get_user()
     restaurants = get_restaurants_data()
     if user:
         try:
@@ -98,7 +114,7 @@ class AboutPage(webapp2.RequestHandler):
 class SettingsPage(webapp2.RequestHandler):
 
     def get(self):
-        if users.get_current_user() != None:
+        if get_user() != None:
             template_values = create_dictionary_with_user_loginURL_and_logoutURL(self)
             restaurants = get_restaurants_data()
             template_values["restaurant_names"] = restaurants.get_restaurant_names()
@@ -117,7 +133,7 @@ class SettingsPage(webapp2.RequestHandler):
         list_operation = self.request.get('type')
 
         global USER_RESTAURANTS
-        user = users.get_current_user()
+        user = get_user()
 
         query = ndb.gql("SELECT * FROM UserPrefs WHERE user = :1", user)
         results = query.fetch(2)

@@ -12,8 +12,9 @@ class Restaurants(object):
         self.restaurants.append(restaurant)
 
     def remove_restaurant(self, restaurant):
-        self.restaurants.remove(restaurant)
-
+        if restaurant in self.restaurants:
+            self.restaurants.remove(restaurant)
+    
     def number_of_restaurants(self):
         return len(self.restaurants)
 

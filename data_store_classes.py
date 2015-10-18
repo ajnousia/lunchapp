@@ -34,6 +34,12 @@ from google.appengine.ext import ndb
 #             cgi.escape(greeting.content)))
 #     return output.getvalue()
 
+class PickledRestaurants(ndb.Model):
+    pickled_restaurants = ndb.PickleProperty()
+    week_number = ndb.IntegerProperty()
+
+    
+
 class Account(ndb.Model):
     user_email = ndb.StringProperty()
     user_id = ndb.StringProperty()

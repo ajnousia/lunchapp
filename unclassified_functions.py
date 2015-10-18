@@ -49,13 +49,6 @@ def get_user_restaurants(user):
     return user_restaurants
 
 
-
-class PickledRestaurants(ndb.Model):
-    pickled_restaurants = ndb.PickleProperty()
-    week_number = ndb.IntegerProperty()
-
-
-
 def refresh_and_get_restaurants_data_using_datastore():
     current_week_number = datetime.date.today().isocalendar()[1]
     if lunchapp.USE_DEVELOPMENT_DATA == True:

@@ -14,7 +14,7 @@ class Restaurants(object):
     def remove_restaurant(self, restaurant):
         if restaurant in self.restaurants:
             self.restaurants.remove(restaurant)
-    
+
     def number_of_restaurants(self):
         return len(self.restaurants)
 
@@ -37,7 +37,14 @@ class Restaurant(object):
         self.name = name
         self.address = address_object
         self.menu_list = []
-        self.location = self.geocode_address()
+        if address_object != None:
+            self.location = self.geocode_address()
+
+    def __str__(self):
+        for menu in self.menu_list:
+            for course in menu.courses:
+                for component in course.components:
+                    return "jdkhjk"
 
     def get_menu_list(self):
         return self.menu_list

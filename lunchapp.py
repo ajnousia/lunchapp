@@ -13,7 +13,7 @@ from google.appengine.ext import ndb
 from unclassified_functions import *
 from classes import *
 
-
+DEFAULT_RESTAURANT_NAMES = ["Bolero", "Atomitie 5", "Picante"]
 
 # Kun depolyaat appengineen:
 # 1. Vaihda USE_DEVELOPMENT_DATA = False
@@ -53,13 +53,21 @@ def create_dictionary_with_user_loginURL_and_logoutURL(handler):
         "logout_url" : users.create_logout_url(handler.request.uri)}
     return return_dict
 
+def get_restaurants_object_from_names(name_list):
+    restaurants = get_restaurants_data()
+    return_restaurants = Restaurants()
+    for name in name_list:
+        return_restaurants.add_restaurant(restaurants.get_restaurant_by_name(name))
+    return return_restaurants
+
 def get_template_values_for_MainPage():
     template_values = {}
     user = get_user()
     restaurants = get_restaurants_data()
     if user:
         try:
-            template_values["restaurants"] = get_user_restaurants(user).restaurants
+            user_restaurants = get_user_restaurant_names(user)
+            template_values["restaurants"] = get_restaurants_object_from_names(user_restaurants).restaurants
         except AttributeError:
             template_values["restaurants"] = restaurants.restaurants
     else:
@@ -92,6 +100,25 @@ def fetch_latest_week_restaurants():
     return restaurants_query.fetch(1)
 
 
+def get_user_restaurant_names(user):
+    restaurants = get_restaurants_data().restaurants
+    user_id = user.user_id()
+    if has_user_preferences(user_id):
+        user_preferences = UserPreferences.query(UserPreferences.user_id == user_id).get()
+        return user_preferences.restaurants
+    else:
+        restaurants_list = DEFAULT_RESTAURANT_NAMES
+        user_preferences = UserPreferences(user_id = user_id, restaurants = restaurants_list)
+        user_preferences.put()
+        return restaurants_list
+
+
+def has_user_preferences(user_id):
+    if UserPreferences.query(UserPreferences.user_id == user_id).get() is None:
+        return False
+    else:
+        return True
+
 
 
 class MainPage(webapp2.RequestHandler):
@@ -115,15 +142,14 @@ class AboutPage(webapp2.RequestHandler):
 
 class SettingsPage(webapp2.RequestHandler):
 
+
     def get(self):
-        if get_user() != None:
+        user = get_user()
+        if user != False:
             template_values = create_dictionary_with_user_loginURL_and_logoutURL(self)
             restaurants = get_restaurants_data()
             template_values["restaurant_names"] = restaurants.get_restaurant_names()
-            if USER_RESTAURANTS != None:
-                template_values["user_restaurant_names"] = USER_RESTAURANTS.get_restaurant_names()
-            else:
-                template_values["user_restaurant_names"] = []
+            template_values["user_restaurant_names"] = get_user_restaurant_names(user)
             self.response.headers['Content-Type'] = 'text/html; charset=utf-8'
             template = JINJA_ENVIRONMENT.get_template('settings.html')
             self.response.write(template.render(template_values))
@@ -133,32 +159,15 @@ class SettingsPage(webapp2.RequestHandler):
     def post(self):
         restaurant_name = self.request.get('restaurant_name').strip(' \t\n\r')
         list_operation = self.request.get('type')
-
-        global USER_RESTAURANTS
         user = get_user()
-
-        query = ndb.gql("SELECT * FROM UserPrefs WHERE user = :1", user)
-        results = query.fetch(2)
-        if len(results) > 1:
-            logging.error("more than one UserPrefs object for user %s", str(user))
-        elif len(results) == 0:
-            logging.debug("creating UserPrefs object for user %s", str(user))
-            userprefs = UserPrefs(user=user, restaurants=[RestaurantEntity(name=restaurant_name)])
-            userprefs.put()
-        else:
-            restaurants = get_restaurants_data()
-            entity = UserPrefs.query(UserPrefs.user==user).get()
-            restaurant_obj = restaurants.get_restaurant_by_name(restaurant_name)
-            if list_operation == "add":
-                USER_RESTAURANTS.add_restaurant(restaurant_obj)
-            else: # "remove"
-                USER_RESTAURANTS.remove_restaurant(restaurant_obj)
-            updated_restaurant_entities = []
-            for name in USER_RESTAURANTS.get_restaurant_names():
-                updated_restaurant_entities.append(RestaurantEntity(name=name))
-            entity.restaurants = updated_restaurant_entities
-            entity.put()
-
+        user_preferences = UserPreferences.query(UserPreferences.user_id==user.user_id()).get()
+        user_restaurants = get_user_restaurant_names(user)
+        if list_operation == "add":
+            user_restaurants.append(restaurant_name)
+        else: # "remove"
+            user_restaurants.remove(restaurant_name)
+        user_preferences.restaurants = user_restaurants
+        user_preferences.put()
 
 
 app = webapp2.WSGIApplication([

@@ -39,23 +39,11 @@ def fetch_restaurants_data():
                 restaurant.add_day_menu(menu)
             restaurants.add_restaurant(restaurant)
         except Exception as error:
-            pass    
+            pass
     return restaurants
 
 
-def get_user_restaurants(user):
-    restaurants = lunchapp.get_restaurants_data().restaurants
-    if UserPrefs.query(UserPrefs.user==user).get() is None:
-        return lunchapp.get_restaurants_data()
-    user_restaurants = Restaurants()
-    restaurant_entities = UserPrefs.query(UserPrefs.user==user).get().restaurants
-    for restaurant in restaurants:
-        for restaurant_entity in restaurant_entities:
-            if restaurant.name == restaurant_entity.name:
-                user_restaurants.add_restaurant(restaurant)
 
-    lunchapp.USER_RESTAURANTS = user_restaurants
-    return user_restaurants
 
 
 def refresh_and_get_restaurants_data_using_datastore():

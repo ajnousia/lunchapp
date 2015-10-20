@@ -37,14 +37,7 @@ class Restaurant(object):
         self.name = name
         self.address = address_object
         self.menu_list = []
-        if address_object != None:
-            self.location = self.geocode_address()
-
-    def __str__(self):
-        for menu in self.menu_list:
-            for course in menu.courses:
-                for component in course.components:
-                    return "jdkhjk"
+        self.location = self.geocode_address()
 
     def get_menu_list(self):
         return self.menu_list

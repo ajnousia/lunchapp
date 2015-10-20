@@ -20,10 +20,11 @@ def fetch_restaurants_data():
     picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
     restaurants = add_restaurant_data(restaurants, picante, parse_picante_html)
 
-    sellon_ravintolat = ["marian-konditoria", "ravintola-base", "cafe-buffo", "ravintola-retro", "rax-buffet", "glo-grill-kitchen", "chicos"]
-    for name in sellon_ravintolat:
-        sellon_ravintola = Restaurant(name.replace("-"," ").replace("ravintola","").strip().title(), None)
-        restaurants = add_restaurant_data(restaurants, sellon_ravintola, parse_sello_html, name, last_monday)
+    # sellon_ravintolat = ["marian-konditoria", "ravintola-base", "cafe-buffo", "ravintola-retro", "rax-buffet", "glo-grill-kitchen", "chicos"]
+    # for name in sellon_ravintolat:
+    #     sellon_ravintola = Restaurant(name.replace("-"," ").replace("ravintola","").strip().title(), None)
+    #     restaurants = add_restaurant_data(restaurants, sellon_ravintola, parse_sello_html, name, last_monday)
+
     return restaurants
 
 def add_restaurant_data(restaurants, restaurant, parse_function, *args):
@@ -39,6 +40,8 @@ def add_restaurant_data(restaurants, restaurant, parse_function, *args):
 def refresh_and_get_restaurants_data_using_datastore():
     current_week_number = datetime.date.today().isocalendar()[1]
     restaurants_object = fetch_restaurants_data()
+    if restaurants_object is None:
+        raise TypeError('Restaurants object was expected. Got None instead.')
     parent_datastore_key = ndb.Key("Datastore", "Pickled_restaurants_objects")
     restaurants = PickledRestaurants(parent=parent_datastore_key, pickled_restaurants=restaurants_object, week_number=current_week_number)
     restaurants.put()

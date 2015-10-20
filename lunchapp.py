@@ -94,6 +94,12 @@ class SettingsPage(webapp2.RequestHandler):
         user_preferences.put()
 
 
+class RefreshData(webapp2.RequestHandler):
+
+    def get(self):
+        pass
+
+
 def get_user():
     user = users.get_current_user()
     parent_key = ndb.Key("Datastore", "Accounts")

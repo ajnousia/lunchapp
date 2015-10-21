@@ -22,7 +22,7 @@ class Restaurants(object):
         for restaurant in self.restaurants:
             if restaurant.name == name:
                 return restaurant
-        return None
+        raise Exception("Restaurant name not found.")
 
     def get_restaurant_names(self):
         names = []

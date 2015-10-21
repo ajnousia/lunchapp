@@ -52,7 +52,10 @@ class MainPage(webapp2.RequestHandler):
         restaurants = get_restaurants_data()
         return_restaurants = Restaurants()
         for name in name_list:
-            return_restaurants.add_restaurant(restaurants.get_restaurant_by_name(name))
+            try:
+                return_restaurants.add_restaurant(restaurants.get_restaurant_by_name(name))
+            except Exception:
+                pass
         return return_restaurants
 
 
@@ -94,10 +97,10 @@ class SettingsPage(webapp2.RequestHandler):
         user_preferences.put()
 
 
-class RefreshData(webapp2.RequestHandler):
+class FetchData(webapp2.RequestHandler):
 
-    def get(self):
-        pass
+    def post(self):
+        refresh_and_get_restaurants_data_using_datastore()
 
 
 def get_user():
@@ -164,15 +167,15 @@ def get_restaurant_data_from_memory():
     return restaurants[0].pickled_restaurants
 
 def fetch_latest_week_restaurants():
-    parent_datastore_key = ndb.Key("Datastore", "Pickled_restaurants_objects")
-    restaurants_query = PickledRestaurants.query(ancestor=parent_datastore_key).order(-PickledRestaurants.week_number)
+    restaurants_query = PickledRestaurants.query(ancestor=ndb.Key("Parent", "Restaurants")).order(-PickledRestaurants.week_number)
     return restaurants_query.fetch(1)
-
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     (r'/settings', SettingsPage),
-    (r'/about', AboutPage)],
+    (r'/about', AboutPage),
+    (r'/worker', FetchData)
+    ],
     debug=True)
 
 

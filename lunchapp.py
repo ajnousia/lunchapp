@@ -172,11 +172,9 @@ def fetch_latest_week_restaurants():
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
-    (r'/settings', SettingsPage),
-    (r'/about', AboutPage),
     (r'/worker', FetchData)
     ],
-    debug=True)
+    debug=False)
 
 
 # Kun depolyaat appengineen:

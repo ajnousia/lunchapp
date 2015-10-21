@@ -29,42 +29,6 @@
         </button>
         <a class="navbar-brand">LunchApp</a>
       </div>
-      {% set navigation_bar = [
-        ('/', 'index', 'Viikon ruokalistat'),
-        ('/settings', 'settings', 'Asetukset'),
-        ('/about', 'about', 'About')
-      ] -%}
-      {% set active_page = active_page|default('index') -%}
-      <div class="collapse navbar-collapse" id="navbar-ex-collapse">
-        <ul class="nav navbar-nav">
-          {% for href, id, caption in navigation_bar if user or id != "settings"%}
-            <li{% if id == active_page %} class="active"{% endif%}>
-              <a href="{{ href|e }}">{{ caption|e }}</a></li>
-          {% endfor %}
-          <!-- TODO -->
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li>
-            {% if user %}
-              <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="glyphicon glyphicon-user"></span> {{user.nickname()}}<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="#">Reset data</a></li>
-                <li><a href="#">Another action</a></li>
-                <li><a href="#">Something else here</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href="#">Separated link</a></li>
-                <li role="separator" class="divider"></li>
-                <li><a href={{logout_url}}>Logout</a></li>
-              </ul>
-            </li>
-            {% else %}
-              <a href= {{login_url}} >Login</a>
-            {% endif %}
-          </li>
-        </ul>
-      </div>
     </div>
   </div>
   {% block content %}{% endblock %}

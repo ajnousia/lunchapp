@@ -1,0 +1,5 @@
+cron:
+- description: refresh restaurants data
+  url: /
+  schedule: every monday 01:00
+  timezone:  Europe/Helsinki

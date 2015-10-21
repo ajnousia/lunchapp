@@ -51,3 +51,12 @@
   font-size: 15;
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
+
+.list-group-item {
+  max-width:200px;
+}
+
+.list-group-item > #ok-sign {
+  float: right;
+  color: darkgray;
+}

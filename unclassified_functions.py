@@ -50,6 +50,8 @@ def fetch_restaurants_data():
 def add_restaurant_data(restaurants, restaurant, parse_function, *args):
     try:
         menus = parse_function(*args)
+        if len(menus) == 0:
+            raise
     except:
         raise
     for menu in menus:

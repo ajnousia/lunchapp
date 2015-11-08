@@ -45,7 +45,7 @@ class MainPage(webapp2.RequestHandler):
             except AttributeError:
                 template_values["restaurants"] = restaurants.restaurants
         else:
-            template_values["restaurants"] = self.get_restaurants_object_from_names(DEFAULT_RESTAURANT_NAMES).restaurants
+            template_values["restaurants"] = self.get_restaurants_object_from_names(DEFAULT_RESTAURANT_NAMES    ).restaurants
         return template_values
 
     def get_restaurants_object_from_names(self, name_list):
@@ -172,9 +172,11 @@ def fetch_latest_week_restaurants():
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),
+    (r'/settings', SettingsPage),
+    (r'/about', AboutPage),
     (r'/worker', FetchData)
     ],
-    debug=False)
+    debug=True)
 
 
 # Kun depolyaat appengineen:

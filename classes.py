@@ -37,7 +37,8 @@ class Restaurant(object):
         self.name = name
         self.address = address_object
         self.menu_list = []
-        self.location = self.geocode_address()
+        if self.address != None:
+            self.location = self.geocode_address()
 
     def get_menu_list(self):
         return self.menu_list

@@ -176,7 +176,7 @@ app = webapp2.WSGIApplication([
     (r'/about', AboutPage),
     (r'/worker', FetchData)
     ],
-    debug=True)
+    debug=False)
 
 
 # Kun depolyaat appengineen:

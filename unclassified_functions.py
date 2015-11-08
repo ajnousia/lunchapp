@@ -18,7 +18,6 @@ def fetch_restaurants_data():
     atomitie5 = Restaurant("Atomitie 5", Address("Atomitie", "5", "00370", "Helsinki"))
     picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
 
-    # tassa nyt on taas tama ancestor, koska strong consistency tai jotain.. en oikein ymmarra mutta luotan mutuun.
     parent_datastore_key_for_ancestor_query = ndb.Key("Datastore", "Server properties")
     fetch_error = FetchError.get_or_insert("Fetch error", parent = parent_datastore_key_for_ancestor_query, was_error = False)
     fetch_error.was_error = False

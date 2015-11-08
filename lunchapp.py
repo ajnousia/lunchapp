@@ -154,7 +154,12 @@ def get_restaurants_data():
 
 def is_uptodate_data_available_in_memory():
     restaurants = fetch_latest_week_restaurants()
+    fetch_error = FetchError.query().get()
     if len(restaurants) == 0:
+        return False
+    if fetch_error is None:
+        return False
+    if fetch_error.was_error == True:
         return False
     current_week_number = datetime.date.today().isocalendar()[1]
     if restaurants[0].week_number == current_week_number:

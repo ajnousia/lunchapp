@@ -65,8 +65,11 @@ def refresh_and_get_restaurants_data_using_datastore():
         raise TypeError('Restaurants object was expected. Got None instead.')
     fetch_error = FetchError.query().get()
     if fetch_error.was_error == True:
-        task = taskqueue.Task(url="/worker", countdown=7200)
-        task.add()
+        try:
+            task = taskqueue.Task(name="new_fetch", url="/worker", countdown=7200)
+            task.add()
+        except Exception:
+            pass
     parent_key = ndb.Key("Parent", "Restaurants")
     restaurants = PickledRestaurants.query(ancestor=parent_key).filter(PickledRestaurants.week_number == current_week_number).get()
     if restaurants is None:

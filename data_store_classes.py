@@ -4,6 +4,7 @@ from google.appengine.ext import ndb
 class PickledRestaurants(ndb.Model):
     pickled_restaurants = ndb.PickleProperty()
     week_number = ndb.IntegerProperty()
+    date = ndb.DateProperty(auto_now_add=True)
 
 
 class Account(ndb.Model):

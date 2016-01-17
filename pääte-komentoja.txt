@@ -1,0 +1,7 @@
+dev_appserver.py --clear_datastore=yes app.yaml
+  - käynnistää paikallisen development-serverin ja pyyhkii datastoren
+  - osoite on http://localhost:8080/ ja valvontapaneeli http://localhost:8000/
+
+appcfg.py -A lunchapp-1058 update ./
+  - päivittää serverin ohjelman
+  - mitäköhän toi "A" nyt meinaskaan.. voisin kirjoittaa vastauksen joskus tänne

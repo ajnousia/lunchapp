@@ -148,32 +148,40 @@ def has_user_preferences(user_id):
 
 def get_restaurants_data():
     if is_uptodate_data_available_in_memory():
-        return get_restaurant_data_from_memory()
+        return get_latest_restaurant_datastore_entity().pickled_restaurants
     else:
         return refresh_and_get_restaurants_data_using_datastore()
 
 def is_uptodate_data_available_in_memory():
-    restaurants = fetch_latest_week_restaurants()
-    fetch_error = FetchError.query().get()
-    if len(restaurants) == 0:
+    try:
+        restaurants_datastore_entity = get_latest_restaurant_datastore_entity()
+    except IndexError:
         return False
+    fetch_error = FetchError.query().get()
     if fetch_error is None:
         return False
     if fetch_error.was_error == True:
         return False
     current_week_number = datetime.date.today().isocalendar()[1]
-    if restaurants[0].week_number == current_week_number:
+    if restaurants_datastore_entity.week_number == current_week_number:
         return True
     else:
         return False
 
-def get_restaurant_data_from_memory():
-    restaurants = fetch_latest_week_restaurants()
-    return restaurants[0].pickled_restaurants
+def get_latest_restaurant_datastore_entity():
+    batch_size = 1
+    restaurant_entities = get_latest_week_restaurants_query().fetch(batch_size)
+    try:
+        restaurants_datastore_entity = restaurant_entities[0]
+        return restaurants_datastore_entity
+    except IndexError:
+        print "No restaurants data in Datastore"
+        raise IndexError
 
-def fetch_latest_week_restaurants():
-    restaurants_query = PickledRestaurants.query(ancestor=ndb.Key("Parent", "Restaurants")).order(-PickledRestaurants.week_number)
-    return restaurants_query.fetch(1)
+def get_latest_week_restaurants_query():
+    qry = PickledRestaurants.query(ancestor=ndb.Key("Parent", "Restaurants"))
+    qry = qry.order(-PickledRestaurants.date)
+    return qry
 
 app = webapp2.WSGIApplication([
     ('/', MainPage),

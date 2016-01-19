@@ -13,5 +13,16 @@ indexes:
 - kind: PickledRestaurants
   ancestor: yes
   properties:
+  - name: date
+
+- kind: PickledRestaurants
+  ancestor: yes
+  properties:
+  - name: date
+    direction: desc
+
+- kind: PickledRestaurants
+  ancestor: yes
+  properties:
   - name: week_number
     direction: desc

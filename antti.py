@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 import datetime
 import urllib
 import pickle
@@ -13,27 +14,30 @@ def fetch_restaurants_data():
 
     restaurants = Restaurants()
 
-    print "Bolero"
+    '''print "Bolero"
     bolero = Restaurant("Bolero", Address("Atomitie", "2", "00370", "Helsinki"))
     for menu in parse_bolero_json(last_monday):
         bolero.add_day_menu(menu)
-        print menu.courses
+        for course in menu.courses:
+            print course.components[0].name.encode('utf-8'), course.price
 
     print "A5"
     atomitie5 = Restaurant("Atomitie 5", Address("Atomitie", "5", "00370", "Helsinki"))
     for menu in parse_atomitie5_json(last_monday):
         atomitie5.add_day_menu(menu)
-        print menu.courses
-
+        for course in menu.courses:
+            print course.components[0].name.encode('utf-8'), course.price
+'''
     print "picante"
     picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
     for menu in parse_picante_html():
         picante.add_day_menu(menu)
-        print menu.courses
+        for course in menu.courses:
+            print course.components[0].name.encode('utf-8'), course.price
 
     for i in range(5):
-        restaurants.add_restaurant(bolero)
-        restaurants.add_restaurant(atomitie5)
+        #restaurants.add_restaurant(bolero)
+        #restaurants.add_restaurant(atomitie5)
         restaurants.add_restaurant(picante)
 
 
@@ -47,4 +51,5 @@ def create_dymmy_restaurant_data():
     pickle.dump(restaurants_data, output)
     output.close()
 
-create_dymmy_restaurant_data()
+#create_dymmy_restaurant_data()
+fetch_restaurants_data()

@@ -40,7 +40,7 @@ def parse_picante_html():
             types = types_string.split(',')
 
             try:
-                price = elem.findNext('span').contents[0].split(' ')[0]
+                price = elem.find('span').contents[0].split(' ')[0]
             except AttributeError:
                 price = None
 

@@ -60,7 +60,10 @@ def parse_atomitie5_json(start_date):
         json_string = get_json('http://www.sodexo.fi/ruokalistat/output/daily_json/9/{0}/{1}/{2}/fi'.format(str(date.year), str(date.strftime('%m')), str(date.strftime('%d'))))
         new_menu = DayMenu(date)
         for lunch in json_string["courses"]:
-            new_course = Course(lunch["price"])
+            try:
+                new_course = Course(lunch["price"])
+            except KeyError:
+                new_course = Course(None)
             try:
                 types = lunch["properties"].split(',')
             except KeyError:

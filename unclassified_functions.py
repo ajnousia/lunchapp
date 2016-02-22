@@ -19,7 +19,7 @@ def fetch_restaurants_data():
     picante = Restaurant("Picante", Address("Valimotie", "8", "00380", "Helsinki"))
 
     parent_datastore_key_for_ancestor_query = ndb.Key("Datastore", "Server properties")
-    fetch_error = FetchError.get_or_insert("Fetch error", parent = parent_datastore_key_for_ancestor_query, was_error = False)
+    fetch_error = FetchError.get_or_insert("Fetch error", parent = parent_datastore_key_for_ancestor_query, was_error = False, task_queue_id = 0)
     fetch_error.was_error = False
 
     try:
@@ -65,11 +65,7 @@ def refresh_and_get_restaurants_data_using_datastore():
         raise TypeError('Restaurants object was expected. Got None instead.')
     fetch_error = FetchError.query().get()
     if fetch_error.was_error == True:
-        try:
-            task = taskqueue.Task(name="new_fetch", url="/worker", countdown=7200)
-            task.add()
-        except Exception:
-            pass
+        create_new_fetch_task(fetch_error)
     parent_key = ndb.Key("Parent", "Restaurants")
     restaurants = PickledRestaurants.query(ancestor=parent_key).filter(PickledRestaurants.week_number == current_week_number).get()
     if restaurants is None:
@@ -78,3 +74,15 @@ def refresh_and_get_restaurants_data_using_datastore():
         restaurants.pickled_restaurants = restaurants_object
     restaurants.put()
     return restaurants_object
+
+def create_new_fetch_task(fetch_error):
+    try:
+        task_name = "new_fetch_" + str(fetch_error.task_queue_id)
+        task = taskqueue.Task(name=task_name, url="/worker", countdown=7200)
+        task.add()
+    except taskqueue.TombstonedTaskError:
+        fetch_error.task_queue_id += 1
+        fetch_error.put()
+        create_new_fetch_task(fetch_error)
+    except Exception as e:
+        print type(e)

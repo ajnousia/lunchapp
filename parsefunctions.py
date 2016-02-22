@@ -11,7 +11,6 @@ def get_json(url):
     return json.loads(request.read())
 
 def parse_picante_html():
-
     url = 'http://www.taitotalo.com/fi/ravintolat/lounaslistat/picante-viikon-lounaslista/'
     html_doc = urllib2.urlopen(url).read().decode('utf-8')
     soup = BeautifulSoup(html_doc, 'html.parser')

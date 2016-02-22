@@ -21,3 +21,4 @@ class FetchError(ndb.Model):
     was_error = ndb.BooleanProperty()
     # TODO update_counter = ndb.IntergerProperty()
     # TODO error_dates = ndb.DateProperty(repeated=True)
+    task_queue_id = ndb.IntegerProperty()

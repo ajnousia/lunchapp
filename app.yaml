@@ -4,7 +4,6 @@ api_version: 1
 threadsafe: true
 
 
-
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
@@ -35,9 +34,12 @@ handlers:
   script: lunchapp.app
 
 
-
 libraries:
 - name: webapp2
   version: latest
 - name: jinja2
   version: latest
+
+
+builtins:
+- remote_api: on

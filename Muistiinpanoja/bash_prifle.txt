@@ -1,0 +1,4 @@
+# Tämä pitää lisätä .bash_profile tiedostoon, tai ajaa aina uudessa Pääte-sessiossa, jotta testejä voi ajaa päätteen kautta. Muuten tulee "ImportError"
+export PYTHONPATH="$PYTHONPATH:/usr/local/google_appengine"
+
+# .bash_profile löytyy käyttäjän kotihakemistosta esim. /Users/anousiainen

@@ -6,8 +6,6 @@ import pickle
 
 from google.appengine.ext import ndb
 
-def add_dates_to_datastore_entities():
-    pass
 
 def backup_PickledRestaurants_entities_locally(batch_size):
     pickled_restaurants = data_store_classes.PickledRestaurants.query().fetch(batch_size)
@@ -18,10 +16,18 @@ def backup_PickledRestaurants_entities_locally(batch_size):
 def update_datastore_entities_without_dates():
     entities = get_entities_without_date(data_store_classes.PickledRestaurants, 50)
     updated_entities = get_updated_entites_with_added_dates(entities)
-    ndb.put_multi(updated_entities)
+    try:
+        ndb.put_multi(updated_entities)
+    except Exception as e:
+        print(e)
 
 def get_entities_without_date(DatastoreClass, batch_size):
-    return DatastoreClass.query(DatastoreClass.date == None).fetch(batch_size)
+    entities = DatastoreClass.query().fetch(batch_size)
+    entities_without_date = []
+    for entity in entities:
+        if entity.date == None:
+            entities_without_date.append(entity)
+    return entities_without_date
 
 def get_updated_entites_with_added_dates(entities):
     updated_entities = []

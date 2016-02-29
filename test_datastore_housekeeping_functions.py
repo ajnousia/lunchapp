@@ -65,7 +65,12 @@ class TestWithPickledRestaurantsData(unittest.TestCase):
         test_entity_date_added = add_date_from_year_and_weeknumber(test_entity, year, test_entity.week_number)
         self.assertEqual(test_entity.key, test_entity_date_added.key)
 
-    def test_updatetd_entity_has_correct_date(self, ):
+    def test_add_date(self):
+        test_entity = get_entities_without_date(PickledRestaurants, 1)[0]
+        test_entity = add_date_from_year_and_weeknumber(test_entity, 2015, test_entity.week_number)
+        self.assertIsNotNone(test_entity.date)
+
+    def test_updated_entity_has_correct_date(self, ):
         test_entity = get_entities_without_date(PickledRestaurants, 1)[0]
         year = 2015
         test_entity_date_added = add_date_from_year_and_weeknumber(test_entity, year, test_entity.week_number)

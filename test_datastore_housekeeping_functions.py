@@ -5,7 +5,13 @@ import pickle
 import datetime
 
 from data_store_classes import PickledRestaurants
-from datastore_housekeeping_functions import get_entities_without_date, get_monday_date_from_weeknumber
+from datastore_housekeeping_functions import (
+    get_entities_without_date,
+    get_monday_date_from_weeknumber,
+    add_date_from_year_and_weeknumber,
+    get_updated_entites_with_added_dates,
+    update_datastore_entities_without_dates
+    )
 
 from google.appengine.api import memcache
 from google.appengine.ext import ndb
@@ -22,9 +28,6 @@ class TestAddDates(unittest.TestCase):
         self.assertEqual(datetime.date(2015,8,10), get_monday_date_from_weeknumber(2015, 33))
         self.assertEqual(datetime.date(2017,1,2), get_monday_date_from_weeknumber(2017, 1))
         self.assertEqual(datetime.date(2018,1,1), get_monday_date_from_weeknumber(2018, 1))
-
-
-
 
 
 class TestWithPickledRestaurantsData(unittest.TestCase):
@@ -53,11 +56,33 @@ class TestWithPickledRestaurantsData(unittest.TestCase):
     def test_get_entities_without_date(self):
         entities_without_date = get_entities_without_date(PickledRestaurants, 50)
         self.assertGreater(len(entities_without_date), 0)
-        self.log.info("Entities without date -> " + str(len(entities_without_date)))
         for entity in entities_without_date:
             self.assertIsNone(entity.date, "Date was not none")
 
+    def test_updatetd_and_original_entity_has_same_key(self, ):
+        test_entity = get_entities_without_date(PickledRestaurants, 1)[0]
+        year = 2015
+        test_entity_date_added = add_date_from_year_and_weeknumber(test_entity, year, test_entity.week_number)
+        self.assertEqual(test_entity.key, test_entity_date_added.key)
 
+    def test_updatetd_entity_has_correct_date(self, ):
+        test_entity = get_entities_without_date(PickledRestaurants, 1)[0]
+        year = 2015
+        test_entity_date_added = add_date_from_year_and_weeknumber(test_entity, year, test_entity.week_number)
+        self.assertEqual(test_entity_date_added.date, get_monday_date_from_weeknumber(year, test_entity.week_number))
+
+    def test_add_dates_to_entities(self):
+        entities = get_entities_without_date(PickledRestaurants, 50)
+        updated_entities = get_updated_entites_with_added_dates(entities)
+        for entity in updated_entities:
+            self.assertIsNotNone(entity.date)
+            self.assertEqual(2015, entity.date.year)
+
+    def test_update_datastore_entities_without_dates(self):
+        update_datastore_entities_without_dates()
+        entities = PickledRestaurants.query().fetch(50)
+        for entity in entities:
+            self.assertIsNotNone(entity.date)
 
 
 class DataLoader:

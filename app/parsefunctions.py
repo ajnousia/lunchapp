@@ -4,7 +4,7 @@ import json
 import urllib2
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
-from classes import *
+from restaurants_classes import *
 
 def get_json(url):
     request = urllib2.urlopen(url)

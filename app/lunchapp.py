@@ -11,11 +11,8 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 from unclassified_functions import *
-from classes import *
+from restaurants_classes import *
 
-
-# Kun depolyaat appengineen:
-# 1. Vaihda debug=False
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates')),
@@ -45,7 +42,7 @@ class MainPage(webapp2.RequestHandler):
             except AttributeError:
                 template_values["restaurants"] = restaurants.restaurants
         else:
-            template_values["restaurants"] = self.get_restaurants_object_from_names(DEFAULT_RESTAURANT_NAMES    ).restaurants
+            template_values["restaurants"] = self.get_restaurants_object_from_names(DEFAULT_RESTAURANT_NAMES).restaurants
         return template_values
 
     def get_restaurants_object_from_names(self, name_list):
@@ -182,15 +179,3 @@ def get_latest_week_restaurants_query():
     qry = PickledRestaurants.query(ancestor=ndb.Key("Parent", "Restaurants"))
     qry = qry.order(-PickledRestaurants.date)
     return qry
-
-app = webapp2.WSGIApplication([
-    ('/', MainPage),
-    (r'/settings', SettingsPage),
-    (r'/about', AboutPage),
-    (r'/worker', FetchData)
-    ],
-    debug=False)
-
-
-# Kun depolyaat appengineen:
-# 1. Vaihda debug=False

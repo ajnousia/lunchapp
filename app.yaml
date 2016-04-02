@@ -25,7 +25,7 @@ handlers:
   application_readable: true
 
 - url: /.*
-  script: lunchapp.app
+  script: main.app
 
 
 libraries:

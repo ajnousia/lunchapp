@@ -6,7 +6,7 @@ threadsafe: true
 
 handlers:
 - url: /stylesheets
-  static_dir: stylesheets
+  static_dir: assets/css
 
 - url: /jquery
   static_dir: assets/javascript/lib/jquery/dist

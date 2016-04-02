@@ -1,4 +1,3 @@
-import lunchapp
 from google.appengine.ext import ndb
 
 class PickledRestaurants(ndb.Model):

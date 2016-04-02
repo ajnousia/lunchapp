@@ -1,7 +1,4 @@
-import datetime
-import pickle
-
-import parsefunctions
+from helper_functions import get_json
 
 class Restaurants(object):
 
@@ -50,7 +47,7 @@ class Restaurant(object):
         pass
 
     def geocode_address(self):
-        json_string = parsefunctions.get_json(self.build_nominatim_url_query_string())
+        json_string = get_json(self.build_nominatim_url_query_string())
         return Location(json_string[0]["lat"], json_string[0]["lon"])
 
     def build_nominatim_url_query_string(self):

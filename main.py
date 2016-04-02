@@ -9,7 +9,7 @@ from app.lunchapp import *
 app = webapp2.WSGIApplication([
     ('/', MainPage),
     (r'/settings', SettingsPage),
-    (r'/about', AboutPage)#,
-    #(r'/worker', FetchData)
+    (r'/about', AboutPage),
+    (r'/worker', FetchData)
     ],
     debug=False)

@@ -1,14 +1,11 @@
 # -- coding: utf-8 --
 import datetime
-import json
 import urllib2
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
-from restaurant_classes import *
+from restaurant_classes import DayMenu, Course, Component
+from helper_functions import get_json
 
-def get_json(url):
-    request = urllib2.urlopen(url)
-    return json.loads(request.read())
 
 def parse_picante_html():
     url = 'http://www.taitotalo.com/fi/ravintolat/lounaslistat/picante-viikon-lounaslista/'

@@ -10,9 +10,9 @@ import logging
 from google.appengine.api import users
 from google.appengine.ext import ndb
 
-from unclassified_functions import *
 from restaurant_classes import *
-
+from user_functions import *
+from restaurant_data_functions import get_restaurants_data
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 'templates/jinja')),
@@ -98,84 +98,3 @@ class FetchData(webapp2.RequestHandler):
 
     def post(self):
         refresh_and_get_restaurants_data_using_datastore()
-
-
-def get_user():
-    user = users.get_current_user()
-    parent_key = ndb.Key("Datastore", "Accounts")
-    if user:
-        accounts_query = Account.query(ancestor=parent_key).filter(Account.user_id == user.user_id())
-        accounts = accounts_query.fetch(2)
-        if len(accounts) > 1:
-            print "Duplicate user. This shouldn't happen..."
-        if len(accounts) > 0:
-            return user
-        else:
-            account = Account(parent = parent_key, user_email = user.email(), user_id = user.user_id())
-            account.put()
-            return user
-    else:
-        return False
-
-def create_dictionary_with_user_loginURL_and_logoutURL(handler):
-    user = get_user()
-    return_dict = {
-        "user" : user,
-        "login_url" : users.create_login_url(handler.request.uri),
-        "logout_url" : users.create_logout_url(handler.request.uri)}
-    return return_dict
-
-def get_user_restaurant_names(user):
-    restaurants = get_restaurants_data().restaurants
-    user_id = user.user_id()
-    if has_user_preferences(user_id):
-        user_preferences = UserPreferences.query(UserPreferences.user_id == user_id).get()
-        return user_preferences.restaurants
-    else:
-        restaurants_list = DEFAULT_RESTAURANT_NAMES
-        user_preferences = UserPreferences(user_id = user_id, restaurants = restaurants_list)
-        user_preferences.put()
-        return restaurants_list
-
-def has_user_preferences(user_id):
-    if UserPreferences.query(UserPreferences.user_id == user_id).get() is None:
-        return False
-    else:
-        return True
-
-def get_restaurants_data():
-    if is_uptodate_data_available_in_memory():
-        return get_latest_restaurant_datastore_entity().pickled_restaurants
-    else:
-        return refresh_and_get_restaurants_data_using_datastore()
-
-def is_uptodate_data_available_in_memory():
-    try:
-        restaurants_datastore_entity = get_latest_restaurant_datastore_entity()
-    except IndexError:
-        return False
-    fetch_error = FetchError.query().get()
-    if fetch_error is None:
-        return False
-    if fetch_error.was_error == True:
-        return False
-    current_week_number = datetime.date.today().isocalendar()[1]
-    if restaurants_datastore_entity.week_number == current_week_number:
-        return True
-    else:
-        return False
-
-def get_latest_restaurant_datastore_entity():
-    batch_size = 1
-    restaurant_entities = get_latest_week_restaurants_query().fetch(batch_size)
-    try:
-        restaurants_datastore_entity = restaurant_entities[0]
-        return restaurants_datastore_entity
-    except IndexError:
-        print "No restaurants data in Datastore"
-        raise IndexError
-
-def get_latest_week_restaurants_query():
-    qry = PickledRestaurants.query(ancestor=ndb.Key("Parent", "Restaurants"))
-    qry = qry.order(-PickledRestaurants.date)
-    return qry

@@ -11,7 +11,7 @@ from google.appengine.api import users
 from google.appengine.ext import ndb
 
 from unclassified_functions import *
-from restaurants_classes import *
+from restaurant_classes import *
 
 
 JINJA_ENVIRONMENT = jinja2.Environment(

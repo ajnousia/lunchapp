@@ -4,7 +4,7 @@ import urllib
 import pickle
 
 from parsefunctions import *
-from restaurants_classes import *
+from restaurant_classes import *
 
 RESTAURANTS = None
 

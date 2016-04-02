@@ -9,19 +9,13 @@ handlers:
   static_dir: stylesheets
 
 - url: /jquery
-  static_dir: bower_components/jquery/dist
-
-- url: /list.js
-  static_dir: bower_components/list.js/dist
-
-- url: /list.fuzzysearch.js
-  static_dir: bower_components/list.fuzzysearch.js/dist
+  static_dir: assets/javascript/lib/jquery/dist
 
 - url: /bootstrap
-  static_dir: bower_components/bootstrap/dist
+  static_dir: assets/javascript/lib/bootstrap/dist
 
 - url: /fonts
-  static_dir: bower_components/bootstrap/dist/fonts
+  static_dir: assets/javascript/lib/bootstrap/dist/fonts
 
 - url: /scripts
   static_dir: scripts

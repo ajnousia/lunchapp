@@ -1,4 +1,4 @@
-from helper_functions import get_json
+from utilities import get_json
 
 class Restaurants(object):
 

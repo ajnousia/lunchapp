@@ -4,7 +4,7 @@ import urllib2
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from restaurant_classes import DayMenu, Course, Component
-from helper_functions import get_json
+from utilities import get_json
 
 
 def parse_picante_html():

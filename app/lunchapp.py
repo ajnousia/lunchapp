@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 # -- coding: utf-8 --
+import os
 import webapp2
 import jinja2
-import datetime
-import os
-import urllib
-import pickle
-import logging
-from google.appengine.api import users
+
 from google.appengine.ext import ndb
 
-from restaurant_classes import *
+from restaurant_classes import Restaurants
+from data_store_classes import UserPreferences
 from user_functions import *
 from restaurant_data_functions import get_restaurants_data
 

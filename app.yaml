@@ -1,31 +1,47 @@
+application: your-app-id
 version: 1
 runtime: python27
-api_version: 1
 threadsafe: true
+api_version: 1
 
 
 handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /rest/.*
+  script: main.app
+
+- url: (.*)/
+  static_files: material_app\1/index.html
+  upload: material_app
+
+- url: (.*)
+  static_files: material_app\1
+  upload: material_app
+
 - url: /css
   static_dir: assets/css
 
-- url: /jquery
-  static_dir: assets/javascript/lib/jquery/dist
+# - url: /jquery
+#   static_dir: assets/javascript/lib/jquery/dist
+#
+# - url: /bootstrap
+#   static_dir: assets/javascript/lib/bootstrap/dist
+#
+# - url: /fonts
+#   static_dir: assets/javascript/lib/bootstrap/dist/fonts
+#
+# - url: /scripts
+#   static_dir: scripts
+#
+# - url: /static_files
+#   static_dir: static_files
+#   application_readable: true
 
-- url: /bootstrap
-  static_dir: assets/javascript/lib/bootstrap/dist
-
-- url: /fonts
-  static_dir: assets/javascript/lib/bootstrap/dist/fonts
-
-- url: /scripts
-  static_dir: scripts
-
-- url: /static_files
-  static_dir: static_files
-  application_readable: true
-
-- url: /.*
-  script: main.app
+# - url: /.*
+#   script: main.app
 
 
 libraries:

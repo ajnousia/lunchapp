@@ -1,7 +1,7 @@
 # -- coding: utf-8 --
 import datetime
 import urllib2
-from bs4 import BeautifulSoup
+# from bs4 import BeautifulSoup
 from HTMLParser import HTMLParser
 from restaurant_classes import DayMenu, Course, Component
 from utilities import get_json

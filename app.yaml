@@ -14,15 +14,17 @@ handlers:
   script: main.app
 
 - url: (.*)/
-  static_files: material_app\1/index.html
-  upload: material_app
+  static_files: materialapp\1/index.html
+  upload: materialapp
 
 - url: (.*)
-  static_files: material_app\1
-  upload: material_app
+  static_files: materialapp\1
+  upload: materialapp
 
-- url: /css
-  static_dir: assets/css
+
+
+# - url: /css
+#   static_dir: assets/css
 
 # - url: /jquery
 #   static_dir: assets/javascript/lib/jquery/dist

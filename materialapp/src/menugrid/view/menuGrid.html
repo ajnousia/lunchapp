@@ -1,0 +1,12 @@
+<div class="md-padding" ng-cloak>
+  <md-grid-list md-row-height="{{mgctrl.gridRowHeight}}px" md-cols-xs="1" md-cols-sm="2" md-cols-md="3" md-cols-lg="4" md-cols-gt-lg="5" md-gutter="0px">
+      <md-grid-tile md-colspan="1"
+                    md-rowspan="{{mgctrl.gridTiles[$index]['rowspan']}}"
+                    ng-repeat="object in mgctrl.gridTiles">
+        <menu-card  index="$index"
+                    data="mgctrl.gridTiles"
+                    rowheight = "mgctrl.gridRowHeight">
+                  </menu-card>
+      </md-grid-tile>
+  </md-grid-list>
+</div>

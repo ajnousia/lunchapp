@@ -1,0 +1,15 @@
+<md-card style="width: 280px;">
+  <md-card-header>
+      <md-card-header-text class="md-title">
+        {{index}}
+      </md-card-header-text>
+  </md-card-header>
+  <md-card-content>
+    <div ng-repeat='menu in gridTiles[index]["content"]["menu"]'>
+      <div ng-repeat='row in menu'>
+        {{row}}
+      </div>
+      <br />
+    </div>
+  </md-card-content>
+</md-card>

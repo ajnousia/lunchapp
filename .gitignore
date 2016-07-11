@@ -3,6 +3,5 @@
 .settings
 .pydevproject
 ~$*.pptx
-src/
 static_files/*.pkl
 index.yaml

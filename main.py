@@ -2,10 +2,9 @@
 # -- coding: utf-8 --
 
 from app.lunchapp import *
-from material_backend.materiala import *
+from material_backend.material_app import *
 
-print "ASDF"
-asdf()
+
 
 
 # Kun depolyaat appengineen:

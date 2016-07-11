@@ -1,0 +1,2 @@
+Testit ajetaan yläkansiossa esim.
+req:lunchapp-1058 anousiainen$ python -m unittest tests.test

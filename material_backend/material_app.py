@@ -3,6 +3,7 @@ import json
 import model
 
 
+
 def AsDict(guest):
     return {'id': guest.key.id(), 'first': guest.first, 'last': guest.last}
 

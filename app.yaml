@@ -14,12 +14,12 @@ handlers:
   script: main.app
 
 - url: (.*)/
-  static_files: materialapp\1/index.html
-  upload: materialapp
+  static_files: material_frontend\1/index.html
+  upload: material_frontend
 
 - url: (.*)
-  static_files: materialapp\1
-  upload: materialapp
+  static_files: material_frontend\1
+  upload: material_frontend
 
 
 

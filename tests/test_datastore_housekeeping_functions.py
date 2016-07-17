@@ -4,8 +4,8 @@ import sys
 import pickle
 import datetime
 
-from app.data_store_classes import PickledRestaurants
-from app.datastore_housekeeping_functions import (
+from old_lunchapp.data_store_classes import PickledRestaurants
+from old_lunchapp.datastore_housekeeping_functions import (
     get_entities_without_date,
     get_monday_date_from_weeknumber,
     add_date_from_year_and_weeknumber,

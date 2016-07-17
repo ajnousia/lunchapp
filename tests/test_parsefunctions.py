@@ -1,5 +1,5 @@
 import unittest
-from app.parsefunctions import get_json
+from old_lunchapp.parsefunctions import get_json
 
 class  TestAtomitieParser(unittest.TestCase):
 

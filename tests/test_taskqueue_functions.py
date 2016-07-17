@@ -1,9 +1,7 @@
 import unittest
-import unclassified_functions
 
 from google.appengine.api import taskqueue
 from google.appengine.ext import testbed
-
 
 class TaskQueueTestCase(unittest.TestCase):
 
@@ -23,5 +21,5 @@ class TaskQueueTestCase(unittest.TestCase):
         assert len(tasks) == 1
         assert tasks[0].name == "my_task"
 
-suite = unittest.TestLoader().loadTestsFromTestCase(TaskQueueTestCase)
-unittest.TextTestRunner(verbosity=2).run(suite)
+# suite = unittest.TestLoader().loadTestsFromTestCase(TaskQueueTestCase)
+# unittest.TextTestRunner(verbosity=2).run(suite)

@@ -3,9 +3,7 @@
       <md-grid-tile md-colspan="1"
                     md-rowspan="{{mgctrl.gridTiles[$index]['rowspan']}}"
                     ng-repeat="object in mgctrl.gridTiles">
-        <menu-card  index="$index"
-                    data="mgctrl.gridTiles"
-                    rowheight = "mgctrl.gridRowHeight">
+        <menu-card  index="$index" data="mgctrl.gridTiles" rowheight = "mgctrl.gridRowHeight">
                   </menu-card>
       </md-grid-tile>
   </md-grid-list>

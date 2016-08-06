@@ -30,3 +30,9 @@ class QueryHandler(RestHandler):
         # r = [AsDict(guest) for guest in guests]
         # self.SendJson(r)
         pass
+
+
+
+def update_restaurant_data(week_menu):
+    restaurant = model.Restaurant(name="Bolero")
+    restaurant.put()

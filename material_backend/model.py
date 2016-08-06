@@ -25,3 +25,16 @@ def InsertGuest(first, last):
 def DeleteGuest(id):
     key = ndb.Key(Guest, id)
     key.delete()
+
+
+
+
+class FetchError(ndb.Model):
+    was_error = ndb.BooleanProperty()
+    # TODO update_counter = ndb.IntergerProperty()
+    # TODO error_dates = ndb.DateProperty(repeated=True)
+    task_queue_id = ndb.IntegerProperty()
+
+
+class Restaurant(ndb.Model):
+    name = ndb.StringProperty()

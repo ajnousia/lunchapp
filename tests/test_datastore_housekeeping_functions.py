@@ -42,13 +42,13 @@ class TestWithPickledRestaurantsData(unittest.TestCase):
         self.testbed.init_datastore_v3_stub()
         self.testbed.init_memcache_stub()
         ndb.get_context().clear_cache()
-        DataLoader().load_data_from_disk_to_datastore()
+        DataLoader.load_data_from_disk_to_datastore("PickledRestaurants_backup_2016-02-28.pkl")
 
     def tearDown(self):
         self.testbed.deactivate()
 
     def test_test_data(self):
-        self.assertEqual(len(DataLoader().load_pickled_entities()), len(PickledRestaurants.query().fetch(100)))
+        self.assertEqual(len(DataLoader.load_pickled_entities("PickledRestaurants_backup_2016-02-28.pkl")), len(PickledRestaurants.query().fetch(100)))
 
     def test_update_entities(self):
         pass
@@ -92,13 +92,15 @@ class TestWithPickledRestaurantsData(unittest.TestCase):
 
 class DataLoader:
 
-    def load_pickled_entities(self):
-        with open("PickledRestaurants_backup_2016-02-28.pkl", "rb") as input:
+    @staticmethod
+    def load_pickled_entities(file_name):
+        with open(file_name, "rb") as input:
             entities = pickle.load(input)
         return entities
 
-    def load_data_from_disk_to_datastore(self):
-        entities = self.load_pickled_entities()
+    @staticmethod
+    def load_data_from_disk_to_datastore(file_name):
+        entities = DataLoader.load_pickled_entities(file_name)
         ndb.put_multi(entities)
 
 
@@ -118,15 +120,15 @@ class TestTestDataLoader(unittest.TestCase):
         self.testbed.deactivate()
 
     def test_pickled_entity_is_datastore_entity(self):
-        entities = DataLoader().load_pickled_entities()
+        entities = DataLoader.load_pickled_entities("PickledRestaurants_backup_2016-02-28.pkl")
         self.assertEqual(type(type(entities[0])), ndb.model.MetaModel)
 
     def test_put(self):
-        entities = DataLoader().load_pickled_entities()
+        entities = DataLoader.load_pickled_entities("PickledRestaurants_backup_2016-02-28.pkl")
         entities[0].put()
 
     def test_put_multi(self):
-        entities = DataLoader().load_pickled_entities()
+        entities = DataLoader.load_pickled_entities("PickledRestaurants_backup_2016-02-28.pkl")
         ndb.put_multi(entities)
         self.assertEqual(len(entities), len(PickledRestaurants.query().fetch(100)))
 

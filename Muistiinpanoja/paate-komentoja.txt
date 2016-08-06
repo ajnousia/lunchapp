@@ -5,3 +5,5 @@ dev_appserver.py --clear_datastore=yes app.yaml
 appcfg.py -A lunchapp-1058 update ./
   - päivittää serverin ohjelman
   - komento -A tarkoittaa, että parametrina on annettu projektin ID
+
+remote_api_shell.py -s lunchapp-1058.appspot.com

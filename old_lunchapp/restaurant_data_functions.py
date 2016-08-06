@@ -1,6 +1,7 @@
 import logging
 from google.appengine.api import taskqueue
 from google.appengine.ext import ndb
+
 from data_store_classes import PickledRestaurants, FetchError
 from parsefunctions import *
 from restaurant_classes import Restaurants, Restaurant, Address

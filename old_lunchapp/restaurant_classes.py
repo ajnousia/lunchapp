@@ -62,6 +62,7 @@ class DayMenu(object):
         self.date = date_object
         self.courses = []
 
+
     def add_course(self, course):
         self.courses.append(course)
 
@@ -81,9 +82,9 @@ class Course(object):
 
 class Component(object):
 
-    def __init__(self, name, properties = None):
+    def __init__(self, name, properties_list = None):
         self.name = name
-        self.properties = properties # esim. "V, GL"
+        self.properties = properties_list # esim. "V, GL"
 
     def get_properties_as_string(self):
         if self.properties == None:

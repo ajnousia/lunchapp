@@ -8,7 +8,7 @@ from material_backend.material_app import *
 
 
 # Kun depolyaat appengineen:
-# 1. Vaihda debug=Fals
+# 1. Vaihda debug=False
 
 
 app = webapp2.WSGIApplication([

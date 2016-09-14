@@ -27,8 +27,6 @@ def DeleteGuest(id):
     key.delete()
 
 
-
-
 class FetchError(ndb.Model):
     was_error = ndb.BooleanProperty()
     # TODO update_counter = ndb.IntergerProperty()
@@ -38,3 +36,37 @@ class FetchError(ndb.Model):
 
 class Restaurant(ndb.Model):
     name = ndb.StringProperty()
+    address = ndb.StringProperty()
+
+class Component(ndb.Model):
+    name = ndb.StringProperty()
+    properties = ndb.StringProperty()
+    date = ndb.DateProperty()
+    parent_restaurant_name = ndb.StringProperty()
+
+class Course(ndb.Model):
+    components = ndb.LocalStructuredProperty(Component, repeated=True)
+    price = ndb.FloatProperty()
+    date = ndb.DateProperty()
+    parent_restaurant_name = ndb.StringProperty()
+
+class DayMenu(ndb.Model):
+    date = ndb.DateProperty()
+    courses = ndb.LocalStructuredProperty(Course, repeated=True)
+    parent_restaurant_name = ndb.StringProperty()
+
+
+
+
+#
+# class Component(object):
+#
+#     def __init__(self, name, properties_list = None):
+#         self.name = name
+#         self.properties = properties_list # esim. "V, GL"
+#
+#     def get_properties_as_string(self):
+#         if self.properties == None:
+#             return ''
+#         else:
+#             return ' '.join(self.properties)

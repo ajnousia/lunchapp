@@ -84,7 +84,7 @@ class Component(object):
 
     def __init__(self, name, properties_list = None):
         self.name = name
-        self.properties = properties_list # esim. "V, GL"
+        self.properties = properties_list # esim. ["V", "GL"]
 
     def get_properties_as_string(self):
         if self.properties == None:

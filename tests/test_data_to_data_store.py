@@ -37,7 +37,7 @@ class TestDataToDataStore(unittest.TestCase):
 
     def create_restaurant(self, name):
         restaurant = model.Restaurant(name=name)
-        restaurant.put()
+        return restaurant.put()
 
     def setUp(self):
         self.testbed = testbed.Testbed()
@@ -47,54 +47,58 @@ class TestDataToDataStore(unittest.TestCase):
         self.testbed.init_memcache_stub()
         ndb.get_context().clear_cache()
         self.week_menu_list = self.load_test_data(2)
+        self.first_week_menu = self.week_menu_list[0]
         self.create_restaurant("Bolero")
-
+        restaurant = model.Restaurant.query(model.Restaurant.name == "Bolero").get()
+        datastore_functions.import_weekmenu_into_datastore(self.first_week_menu, restaurant)
 
     def tearDown(self):
         self.testbed.deactivate()
 
-    # def test_print_day_menu(self):
-    #     print "\n"
-    #     self.print_DayMenu(self.week_menu_list[0])
-    #
-    # def test_test_data(self):
-    #     self.assertEqual("Paahdettua perunaa ja kasviksia", self.week_menu_list[0].courses[0].components[1].name, msg="Loaded test data was invalid")
+    def test_test_data(self):
+        self.assertEqual("Paahdettua perunaa ja kasviksia", self.first_week_menu[0].courses[0].components[1].name, msg="Loaded test data was invalid")
 
-    # def test_import_weekmenu_into_datastore(self):
-    #     datastore_functions.import_weekmenu_into_datastore(self.week_menu_list, "Bolero")
-    #     for daymenu in self.week_menu_list:
-    #         datastore_daymenu = model.DayMenu.query(model.DayMenu.date == daymenu.date).get()
-    #         self.assertEqual(datastore_daymenu.date, daymenu.date)
-    #         for course_pairs in zip(datastore_daymenu.courses, daymenu.courses):
-    #             for component_pairs in zip(course_pairs[0].components, course_pairs[1].components):
-    #                 self.assertEqual(component_pairs[0].name, component_pairs[1].name)
-    #
-    # def test_every_course_component_is_in_datastore_by_getting(self):
-    #     datastore_functions.import_weekmenu_into_datastore(self.week_menu_list, "Bolero")
-    #     for daymenu in self.week_menu_list:
-    #         for course in daymenu.courses:
-    #             for component in course.components:
-    #                 datastore_component = model.Component.query(model.Component.name == component.name).get()
-    #                 self.assertEqual(datastore_component.name, component.name)
+    def test_every_course_component_is_in_datastore_by_getting(self):
+        for daymenu in self.first_week_menu:
+            if len(daymenu.courses) == 0:
+                continue
+            for course in daymenu.courses:
+                for component in course.components:
+                    datastore_component = model.Component.query(model.Component.name == component.name).get()
+                    self.assertEqual(datastore_component.name, component.name)
+
+    def test_import_weekmenu_into_datastore(self):
+        for daymenu in self.first_week_menu:
+            datastore_daymenu = model.DayMenu.query(model.DayMenu.date == daymenu.date).get()
+            self.assertEqual(datastore_daymenu.date, daymenu.date)
+            for course_pairs in zip(datastore_daymenu.courses, daymenu.courses):
+                for component_pairs in zip(course_pairs[0].components, course_pairs[1].components):
+                    self.assertEqual(component_pairs[0].name, component_pairs[1].name)
 
     def test_every_course_component_has_correct_properties(self):
-        datastore_functions.import_weekmenu_list_into_datastore(self.week_menu_list, "Bolero")
-        for daymenu in self.week_menu_list[0]:
+        for daymenu in self.first_week_menu:
             for course in daymenu.courses:
                 for component in course.components:
                     datastore_component = model.Component.query(model.Component.name == component.name).get()
                     self.assertEqual(datastore_component.properties, component.get_properties_as_string())
 
     def test_every_course_has_correct_price(self):
-        pass
+        for daymenu in self.first_week_menu:
+            datastore_daymenu = model.DayMenu.query(model.DayMenu.date == daymenu.date).get()
+            for course_pairs in zip(datastore_daymenu.courses, daymenu.courses):
+                if course_pairs[1].price != None:
+                    self.assertEqual(course_pairs[0].price, float(course_pairs[1].price.replace(",", ".")))
+
+    def test_every_course_has_correct_date(self):
+        for daymenu in self.first_week_menu:
+            datastore_daymenu = model.DayMenu.query(model.DayMenu.date == daymenu.date).get()
+            self.assertEqual(datastore_daymenu.date, daymenu.date)
+            for course in datastore_daymenu.courses:
+                self.assertEqual(course.date, daymenu.date)
+                for componet in course.components:
+                    self.assertEqual(componet.date, daymenu.date)
 
 
-
-
-
-
-
-# if __name__ == '__main__':
-#     # unittest.main()
-#     suite = unittest.TestLoader().loadTestsFromTestCase(TestDataToDataStore)
-#     unittest.TextTestRunner(verbosity=1).run(suite)
+if __name__ == '__main__':
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestDataToDataStore)
+    unittest.TextTestRunner(verbosity=2).run(suite)

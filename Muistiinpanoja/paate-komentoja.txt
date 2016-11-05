@@ -7,3 +7,13 @@ appcfg.py -A lunchapp-1058 update ./
   - komento -A tarkoittaa, että parametrina on annettu projektin ID
 
 remote_api_shell.py -s lunchapp-1058.appspot.com
+
+TESTIEN AJAMINEN
+  Aja tiedosto "run_tests.py" komennolla "python run_tests.py"
+
+  Yksittäisi testimoduuleita, -luokkia ja testejä voi ajaa esim. komennolla
+    python -m unittest -v tests.test_data_to_data_store.TestDataToDataStore.test_every_course_has_correct_price
+  Komento tulee ajaa projektin juuri-hakemistossa
+
+  # Jotta testejä voi ajaa päätteen kautta, tämä pitää lisätä .bash_profile tiedostoon, tai ajaa aina uudessa Pääte-sessiossa. Muuten tulee "ImportError"
+  export PYTHONPATH="$PYTHONPATH:/usr/local/google_appengine"

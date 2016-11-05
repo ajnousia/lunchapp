@@ -42,23 +42,21 @@ class Component(ndb.Model):
     name = ndb.StringProperty()
     properties = ndb.StringProperty()
     date = ndb.DateProperty()
-    parent_restaurant_name = ndb.StringProperty()
+    parent_restaurant = ndb.KeyProperty(kind=Restaurant)
 
 class Course(ndb.Model):
     components = ndb.LocalStructuredProperty(Component, repeated=True)
     price = ndb.FloatProperty()
     date = ndb.DateProperty()
-    parent_restaurant_name = ndb.StringProperty()
+    parent_restaurant = ndb.KeyProperty(kind=Restaurant)
 
 class DayMenu(ndb.Model):
     date = ndb.DateProperty()
     courses = ndb.LocalStructuredProperty(Course, repeated=True)
-    parent_restaurant_name = ndb.StringProperty()
+    parent_restaurant = ndb.KeyProperty(kind=Restaurant)
 
 
 
-
-#
 # class Component(object):
 #
 #     def __init__(self, name, properties_list = None):

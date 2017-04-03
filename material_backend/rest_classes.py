@@ -3,11 +3,6 @@ import json
 import model
 
 
-
-def AsDict(guest):
-    return {'id': guest.key.id(), 'first': guest.first, 'last': guest.last}
-
-
 class RestHandler(webapp2.RequestHandler):
 
     def dispatch(self):
@@ -25,7 +20,7 @@ class RestHandler(webapp2.RequestHandler):
 
 class QueryHandler(RestHandler):
 
-    print "Hello"
+    print "asdfasdfsdz"
     def get(self):
         # guests = model.AllGuests()
         # r = [AsDict(guest) for guest in guests]

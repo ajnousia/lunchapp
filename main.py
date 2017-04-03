@@ -1,21 +1,13 @@
 #!/usr/bin/env python
 # -- coding: utf-8 --
 
-from old_lunchapp.lunchapp import *
-from material_backend.material_app import *
-
-
-
+import material_backend.rest_classes as rest_classes
+import webapp2
 
 # Kun depolyaat appengineen:
 # 1. Vaihda debug=False
 
-
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
-    (r'/settings', SettingsPage),
-    (r'/about', AboutPage),
-    (r'/worker', FetchData),
-    ('/rest/query', QueryHandler),
+    ('/rest/query', rest_classes.QueryHandler),
     ],
-    debug=False)
+    debug=True)

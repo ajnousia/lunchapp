@@ -6,7 +6,6 @@ import model
 class RestHandler(webapp2.RequestHandler):
 
     def dispatch(self):
-        # time.sleep(1)
         super(RestHandler, self).dispatch()
 
     def SendJson(self, r):
@@ -20,9 +19,5 @@ class RestHandler(webapp2.RequestHandler):
 
 class QueryHandler(RestHandler):
 
-    print "asdfasdfsdz"
     def get(self):
-        # guests = model.AllGuests()
-        # r = [AsDict(guest) for guest in guests]
-        # self.SendJson(r)
         pass

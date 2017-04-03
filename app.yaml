@@ -22,36 +22,9 @@ handlers:
   upload: material_frontend
 
 
-
-# - url: /css
-#   static_dir: assets/css
-
-# - url: /jquery
-#   static_dir: assets/javascript/lib/jquery/dist
-#
-# - url: /bootstrap
-#   static_dir: assets/javascript/lib/bootstrap/dist
-#
-# - url: /fonts
-#   static_dir: assets/javascript/lib/bootstrap/dist/fonts
-#
-# - url: /scripts
-#   static_dir: scripts
-#
-# - url: /static_files
-#   static_dir: static_files
-#   application_readable: true
-
-# - url: /.*
-#   script: main.app
-
-
 libraries:
 - name: webapp2
   version: latest
-- name: jinja2
-  version: latest
-
 
 builtins:
 - remote_api: on
